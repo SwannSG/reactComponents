@@ -1,0 +1,11 @@
+.HandNS-img, .HandEW-img {
+    display: inline-block;
+    position: absolute;
+    margin: 0;
+    padding: 0;
+}
+
+.HandWest-meta {
+    transform-origin: left bottom;
+    transform: rotate(90deg);
+}
