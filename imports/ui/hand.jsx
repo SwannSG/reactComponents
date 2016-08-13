@@ -68,6 +68,22 @@ class HandNS extends Component {
         }
     }
 
+    showVulnerabilityNS() {
+        // returns vulnerability
+        this.vulnerable.display = true;
+        this.vulnerable.style.height = this.props.cardheight*0.085;
+        this.vulnerable.style.width = this.hand.style.width/3;
+        this.vulnerable.style.left = this.vulnerable.style.width;
+        if (this.props.vulnerable) {
+            // vulnerable
+            this.vulnerable.style.backgroundColor = 'red';
+        }
+        else {
+            // not-vulnerable
+            this.vulnerable.style.backgroundColor = 'green';
+        }
+    }
+
     render() {
         var arr = this.getArray();
         this.hand.style.height = this.props.cardheight;
@@ -80,24 +96,12 @@ class HandNS extends Component {
         this.label.style.top = this.props.cardheight*0.4;
         this.label.style.left = this.hand.style.width/2.3;
         if (this.props.vulnerable===null) {
-            // don't show vulnerability
             this.vulnerable.display = false;
         }
         else {
-            // show vulnerability
-            this.vulnerable.display = true;
-            this.vulnerable.style.height = this.props.cardheight*0.085;
-            this.vulnerable.style.width = this.hand.style.width/3;
-            this.vulnerable.style.left = this.vulnerable.style.width;
-            if (this.props.vulnerable) {
-                // vulnerable
-                this.vulnerable.style.backgroundColor = 'red';
-            }
-            else {
-                // not-vulnerable
-                this.vulnerable.style.backgroundColor = 'green';
-            }
+            this.showVulnerabilityNS();
         }
+
         return (
             <div style={this.hand.style}>
                 {arr.map(function(x, index) {
@@ -139,6 +143,23 @@ class HandEW extends HandNS {
         this.img.style.width = this.hand.style.width;               // image width set to card height
     }
 
+    showVulnerabilityEW() {
+        // returns vulnerability
+        this.vulnerable.display = true;
+        this.vulnerable.style.height = this.hand.style.height/3;
+        this.vulnerable.style.width = this.props.cardheight*0.085;
+        this.vulnerable.style.left = 0; // the one to change for east and west
+        this.vulnerable.style.top = this.vulnerable.style.height;
+        if (this.props.vulnerable) {
+            // vulnerable
+            this.vulnerable.style.backgroundColor = 'red';
+        }
+        else {
+            // not-vulnerable
+            this.vulnerable.style.backgroundColor = 'green';
+        }
+    }
+
     render() {
         var arr = this.getArray();
         this.hand.style.width = this.props.cardheight;
@@ -147,12 +168,17 @@ class HandEW extends HandNS {
         this.meta.style.top = (this.hand.style.height - 0.88*this.hand.style.width)/2 - this.props.cardheight*0.21 + 'px';
         this.meta.style.fontSize = this.props.cardheight/11 +'px';
         this.meta.style.left = this.props.cardheight*0.1;
-        this.meta.style.whiteSpace = 'no-wrap';
+        this.meta.style.whiteSpace = 'nowrap';
         this.label.style.fontSize = this.props.cardheight/9 +'px';
-        this.label.style.top = this.hand.style.width/2.3;
-        this.label.style.right = this.props.cardheight*0.4;
+        this.label.style.top = this.props.cardheight*0.84
+        this.label.style.right = this.props.cardheight*0.27;
 
-
+        if (this.props.vulnerable===null) {
+            this.vulnerable.display = false;
+        }
+        else {
+            this.showVulnerabilityEW();
+        }
 
         return (
             <div style={this.hand.style}>
@@ -162,7 +188,8 @@ class HandEW extends HandNS {
                 }, this)}
                 {this.props.meta ? <h4 className={'HandWest-meta'} style={this.meta.style}>
                 <span>{this.props.meta[0]}<br/></span>{this.props.meta[1]}</h4> : null}
-                <h3 style={this.label.style}>{this.label.value}</h3>
+                <h3 className={this.label.style.className} style={this.label.style}>{this.label.value}</h3>
+                {this.vulnerable.display} ? <div style={this.vulnerable.style}></div> : null}
                 {this.vulnerable.display} ? <div style={this.vulnerable.style}></div> : null}
             </div>
         );
@@ -173,8 +200,14 @@ class East extends HandEW {
     constructor() {
         super();
             this.label.value = 'East';
+            this.label.style.className = 'HandEast-meta'
     }
 }
 
 class West extends HandEW {
+    constructor() {
+        super();
+            this.label.value = 'West';
+            this.label.style.className = 'HandWest-meta'
+    }
 }

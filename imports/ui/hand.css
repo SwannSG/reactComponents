@@ -9,3 +9,8 @@
     transform-origin: left bottom;
     transform: rotate(90deg);
 }
+
+.HandEast-meta {
+    transform-origin: left bottom;
+    transform: rotate(-90deg);
+}
