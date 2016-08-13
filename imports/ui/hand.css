@@ -5,12 +5,12 @@
     padding: 0;
 }
 
-.HandWest-meta {
+.HandWest-meta, .HandWest-label {
     transform-origin: left bottom;
     transform: rotate(90deg);
 }
 
-.HandEast-meta {
+.HandEast-meta, .HandEast-label {
     transform-origin: left bottom;
     transform: rotate(-90deg);
 }

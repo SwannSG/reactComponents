@@ -200,7 +200,59 @@ class East extends HandEW {
     constructor() {
         super();
             this.label.value = 'East';
-            this.label.style.className = 'HandEast-meta'
+            this.label.style.className = 'HandEast-label'
+    }
+
+    showVulnerabilityEW() {
+        // returns vulnerability
+        this.vulnerable.display = true;
+        this.vulnerable.style.height = this.hand.style.height/3;
+        this.vulnerable.style.width = this.props.cardheight*0.085;
+        this.vulnerable.style.right = 0; // the one to change for east and west
+        this.vulnerable.style.top = this.vulnerable.style.height;
+        if (this.props.vulnerable) {
+            // vulnerable
+            this.vulnerable.style.backgroundColor = 'red';
+        }
+        else {
+            // not-vulnerable
+            this.vulnerable.style.backgroundColor = 'green';
+        }
+    }
+
+    render() {
+        var arr = this.getArray();
+        this.hand.style.width = this.props.cardheight;
+        this.hand.style.height = this.handWidth(this.props.cardheight);
+        this.img.style.width = this.props.cardheight;
+        this.meta.style.bottom = (this.hand.style.height - 0.43*this.hand.style.width)/2 - this.props.cardheight*0.21 + 'px';
+        this.meta.style.fontSize = this.props.cardheight/11 +'px';
+        this.meta.style.left = this.props.cardheight*0.9;
+        this.meta.style.whiteSpace = 'nowrap';
+        this.label.style.fontSize = this.props.cardheight/9 +'px';
+        this.label.style.bottom = this.props.cardheight*1.04
+        this.label.style.left = this.props.cardheight*0.55;
+
+        if (this.props.vulnerable===null) {
+            this.vulnerable.display = false;
+        }
+        else {
+            this.showVulnerabilityEW();
+        }
+
+        return (
+            <div style={this.hand.style}>
+                {arr.map(function(x, index) {
+                    this.img.style.bottom =  this.hand.style.width*0.133*index;
+                    return <img key={index} className={'HandEW-img'} src={'horizontal/' + x +'.svg'}  style={_.clone(this.img.style)}/>;
+                }, this)}
+                {this.props.meta ? <h4 className={'HandEast-meta'} style={this.meta.style}>
+                <span>{this.props.meta[0]}<br/></span>{this.props.meta[1]}</h4> : null}
+                <h3 className={this.label.style.className} style={this.label.style}>{this.label.value}</h3>
+                {this.vulnerable.display} ? <div style={this.vulnerable.style}></div> : null}
+                {this.vulnerable.display} ? <div style={this.vulnerable.style}></div> : null}
+            </div>
+        );
     }
 }
 
@@ -208,6 +260,6 @@ class West extends HandEW {
     constructor() {
         super();
             this.label.value = 'West';
-            this.label.style.className = 'HandWest-meta'
+            this.label.style.className = 'HandWest-label';
     }
 }
