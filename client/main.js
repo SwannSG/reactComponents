@@ -17,6 +17,6 @@ Meteor.startup(() => {
     // render(<South hand={ bm.south } cardheight={200} meta={bm.handSummary(bm.south)} faceup={true} vulnerable={false}/>, document.getElementById('south'));
     // render(<West hand={ bm.west } cardheight={200}  meta={bm.handSummary(bm.west)} faceup={true}  vulnerable={true}/>, document.getElementById('west'));
     // render(<East hand={ bm.east } cardheight={200}  meta={bm.handSummary(bm.east)} faceup={true}  vulnerable={true}/>, document.getElementById('east'));
-    render(<BidBox containerHeight={220} lastBid={'3d'}/>, document.getElementById('bid-box'))
+    render(<BidBox containerHeight={220} lastBid={'0c'}/>, document.getElementById('bid-box'))
 
 });

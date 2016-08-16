@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { render } from 'react-dom';
 // import { Button, ButtonToolbar, Well } from 'react-bootstrap';
 import './bidBox.css'
 
@@ -55,11 +56,13 @@ class BidBox extends Component {
     }
 
     passFn() {
-        return function() {
-            console.log('passFN executed');
+
+        function buttonClicked(event) {
+            event.preventDefault;
+            window.skaap = event.currentTarget;
+            render(<SuitButtons containerHeight={220} />, document.getElementById('suitButtonsID'));
         }
     }
-
 
     render() {
         this.bidLevel = parseInt(this.props.lastBid.charAt(0));
@@ -77,8 +80,8 @@ class BidBox extends Component {
                 />
                 <Divider scale={this.props.containerHeight}/>
                 <div>
-                    {this.displayLevel(1) ? <Button label={'1'}
-                    click={this.passFn()} scale={this.props.containerHeight}/> : null}
+                    {this.displayLevel(1) ? <Button label={'1'} value={1} scale={this.props.containerHeight} lastBid={this.props.lastBid}
+                    attr1={this.props.lastBid} buttonClicked={this.passFn}/> : null}
                     {this.displayLevel(2) ? <Button label={'2'} scale={this.props.containerHeight}/> : null}
                     {this.displayLevel(3) ? <Button label={'3'} scale={this.props.containerHeight}/> : null}
                     {this.displayLevel(4) ? <Button label={'4'} scale={this.props.containerHeight}/> : null}
@@ -87,19 +90,46 @@ class BidBox extends Component {
                     {this.displayLevel(7) ? <Button label={'7'} scale={this.props.containerHeight}/> : null}
                 </div>
                 <Divider scale={this.props.containerHeight}/>
-                <div>
-                    <Button label={'\u2663'} scale={this.props.containerHeight}/>
-                    <Button label={'\u2666'} scale={this.props.containerHeight} orStyle={{
-                        color: 'red',}}/>
-                    <Button label={'\u2665'} scale={this.props.containerHeight} orStyle={{
-                        color: 'red',}}/>
-                    <Button label={'\u2660'} scale={this.props.containerHeight}/>
-                </div>
+                <div id={'suitButtonsID'}></div>
             </div>
         )
     }
-
 }
+
+
+class SuitButtons extends Component {
+    constructor() {
+        super();
+        this.suitButtons = {
+            style: {
+            }
+        }
+    }
+
+    dsDivider(x, orStyle={}) {
+        var ds = {
+        };
+        return Object.assign(this.divider.style, orStyle, ds);
+    }
+
+    render() {
+        console.log('SuitButtons');
+        return (
+            <div>
+                <Button label={'\u2663'} scale={this.props.containerHeight}/>
+                <Button label={'\u2666'} scale={this.props.containerHeight} orStyle={{
+                    color: 'red',}}/>
+                <Button label={'\u2665'} scale={this.props.containerHeight} orStyle={{
+                    color: 'red',}}/>
+                <Button label={'\u2660'} scale={this.props.containerHeight} cb={'buttonSpades'}/>
+            </div>
+        )
+    }
+}
+
+
+
+
 
 class Divider extends Component {
     constructor() {
@@ -124,6 +154,11 @@ class Divider extends Component {
         );
     }
 }
+
+function bidLevelOnClick(event) {
+    render(<SuitButtons containerHeight={220} />, document.getElementById('suitButtonsID'));
+}
+
 
 class Button extends Component {
     constructor() {
@@ -161,33 +196,39 @@ class Button extends Component {
         return Object.assign(this.button.style, orStyle, ds);
     }
 
-    clickButton() {
-        console.log('clickButton');
-        // console.log(this.state.key);
+    buttonClicked(event) {
+        event.preventDefault;
+        console.log('buttonClicked');
+        window.skaap = event.currentTarget;
+        bidLevelOnClick(event)
+        // render(<SuitButtons containerHeight={220} />, document.getElementById('suitButtonsID'));
     }
 
 
+
     render() {
+        console.log('Button Component');
         return (
             <button style={this.dsButton(this.props.scale, this.props.orStyle)}
-            onClick={this.clickButton()}>
+            onClick={this.buttonClicked} value={this.props.value} data-attr1={this.props.attr1}
+            data-attr2={this.props.attr2}
+            >
                 {this.props.label}
             </button>
         )
     }
 }
 
-class SuitButton extends Button {
-    constructor() {
-        super();
-    }
-
-    render() {
-
-        return (
-            <button style={this.dsButton(this.props.scale, this.props.orStyle)}>
-                {this.props.label}
-            </button>
-        )
-    }
-}
+// class SuitButton extends Button {
+//     constructor() {
+//         super();
+//     }
+//
+//     render() {
+//         return (
+//             <button style={this.dsButton(this.props.scale, this.props.orStyle)}>
+//                 {this.props.label}
+//             </button>
+//         )
+//     }
+// }
