@@ -1,6 +1,6 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
-import { render } from 'react-dom';
+import { render, unmountComponentAtNode } from 'react-dom';
 
 import { East, North, South, West } from '../imports/ui/hand.jsx';
 import { bm } from '../imports/custom/myJsLib.js'
@@ -18,5 +18,4 @@ Meteor.startup(() => {
     // render(<West hand={ bm.west } cardheight={200}  meta={bm.handSummary(bm.west)} faceup={true}  vulnerable={true}/>, document.getElementById('west'));
     // render(<East hand={ bm.east } cardheight={200}  meta={bm.handSummary(bm.east)} faceup={true}  vulnerable={true}/>, document.getElementById('east'));
     render(<BidBox containerHeight={220} lastBid={'1d'}/>, document.getElementById('bid-box'))
-
 });

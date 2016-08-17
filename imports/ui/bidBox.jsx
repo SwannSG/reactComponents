@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { render } from 'react-dom';
+import { render, unmountComponentAtNode } from 'react-dom';
 // import { Button, ButtonToolbar, Well } from 'react-bootstrap';
 import './bidBox.css'
 
@@ -103,59 +103,6 @@ class BidBox extends Component {
 
 
 
-class SuitButtons extends Component {
-    constructor() {
-        super();
-        this.suitButtons = {
-            style: {
-            }
-        }
-    }
-
-    dsDivider(x, orStyle={}) {
-        var ds = {
-        };
-        return Object.assign(this.divider.style, orStyle, ds);
-    }
-
-    displaySuitButtons(level, lastBid) {
-        console.log('displaySuitButtons');
-        bidLevel = parseInt(lastBid.charAt(0));
-        bidSuit = lastBid.charAt(1);
-        if (parseInt(level)===bidLevel) {
-            if (bidSuit==='c') {
-                return [false, true, true, true, true];
-            }
-            else if (bidSuit==='d') {
-                return [false, false, true, true, true];
-            }
-            else if (bidSuit==='h') {
-                return [false, false, false, true, true];
-            }
-            else if (bidSuit==='s') {
-                return [false, false, false, false, true];
-            }
-        }
-        return [true, true, true, true, true];
-    }
-
-
-    render() {
-        var showSuit = this.displaySuitButtons(this.props.level, this.props.lastBid);
-        return (
-            <div>
-                { showSuit[0] ? <Button label={'\u2663'} scale={this.props.containerHeight} level={this.props.level}/> : null }
-                { showSuit[1] ? <Button label={'\u2666'} scale={this.props.containerHeight} orStyle={{
-                    color: 'red',}}/> : null }
-                { showSuit[2] ? <Button label={'\u2665'} scale={this.props.containerHeight} orStyle={{
-                    color: 'red',}}/> : null }
-                { showSuit[3] ? <Button label={'\u2660'} scale={this.props.containerHeight} cb={'buttonSpades'}/> : null }
-                { showSuit[4] ? <Button label={'nt'} scale={this.props.containerHeight} cb={'buttonSpades'}/> : null }
-            </div>
-        )
-    }
-}
-
 
 
 
@@ -242,9 +189,25 @@ class LevelButton extends Button {
     }
 }
 
-
 class SuitButton extends Button {
+    // Suit Button requires following props
+    //      callback:   callback function to execute when button is clicked
+    //      label:      label for button
+    //      level:      the value selected for level of bid
+    //      scale:      sizes the element
+    //      value:      value associated with the button
 
+    render() {
+        (this.props.callback) ? this.button.cb=this.props.callback : this.button.cb=null;
+
+        return (
+            <button style={this.dsButton(this.props.scale, this.props.orStyle)}
+            onClick={this.buttonClicked.bind(this)} value={this.props.value} data-level={this.props.level}
+            >
+                {this.props.label}
+            </button>
+        );
+    }
 }
 
 
@@ -271,5 +234,76 @@ class Divider extends Component {
         return (
             <div style={style=this.dsDivider(this.props.scale)}></div>
         );
+    }
+}
+
+class SuitButtons extends Component {
+    constructor() {
+        super();
+        this.suitButtons = {
+            style: {
+            }
+        };
+        this.cbSuitButton = function cbSuitButton(event) {
+            var suit = event.currentTarget.value;
+            var level = event.currentTarget.getAttribute('data-level');
+            var newBid = level + suit;
+            console.log('latestBid: ' + newBid);
+        };
+    }
+
+    dsDivider(x, orStyle={}) {
+        var ds = {
+        };
+        return Object.assign(this.divider.style, orStyle, ds);
+    }
+
+    displaySuitButtons(level, lastBid) {
+        console.log('displaySuitButtons');
+        bidLevel = parseInt(lastBid.charAt(0));
+        bidSuit = lastBid.charAt(1);
+        if (parseInt(level)===bidLevel) {
+            if (bidSuit==='c') {
+                return [false, true, true, true, true];
+            }
+            else if (bidSuit==='d') {
+                return [false, false, true, true, true];
+            }
+            else if (bidSuit==='h') {
+                return [false, false, false, true, true];
+            }
+            else if (bidSuit==='s') {
+                return [false, false, false, false, true];
+            }
+        }
+        return [true, true, true, true, true];
+    }
+
+    render() {
+        var showSuit = this.displaySuitButtons(this.props.level, this.props.lastBid);
+        return (
+            <div>
+                { showSuit[0] ? <SuitButton label={'\u2663'} callback={this.cbSuitButton}
+                  level={this.props.level} scale={this.props.containerHeight}
+                  value={'c'} data-level={this.props.level}/>
+                 : null }
+                 { showSuit[1] ? <SuitButton label={'\u2666'}  callback={this.cbSuitButton}
+                   level={this.props.level} orStyle={{color: 'red',}} scale={this.props.containerHeight}
+                   value={'d'} data-level={this.props.level}/>
+                 : null }
+                 { showSuit[2] ? <SuitButton label={'\u2665'}  callback={this.cbSuitButton}
+                   level={this.props.level} orStyle={{color: 'red',}} scale={this.props.containerHeight}
+                   value={'h'} data-level={this.props.level}/>
+                 : null }
+                 { showSuit[3] ? <SuitButton label={'\u2660'} callback={this.cbSuitButton}
+                   level={this.props.level} scale={this.props.containerHeight}
+                   value={'s'} data-level={this.props.level}/>
+                  : null }
+                  { showSuit[4] ? <SuitButton label={'nt'} callback={this.cbSuitButton}
+                    level={this.props.level} scale={this.props.containerHeight}
+                    value={'n'} data-level={this.props.level}/>
+                   : null }
+            </div>
+        )
     }
 }
