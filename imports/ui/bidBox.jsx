@@ -56,10 +56,8 @@ class BidBox extends Component {
     }
 
     passFn() {
-
-        function buttonClicked(event) {
-            event.preventDefault;
-            window.skaap = event.currentTarget;
+        return function (event) {
+            console.log('passFn');
             render(<SuitButtons containerHeight={220} />, document.getElementById('suitButtonsID'));
         }
     }
@@ -81,7 +79,7 @@ class BidBox extends Component {
                 <Divider scale={this.props.containerHeight}/>
                 <div>
                     {this.displayLevel(1) ? <Button label={'1'} value={1} scale={this.props.containerHeight} lastBid={this.props.lastBid}
-                    attr1={this.props.lastBid} buttonClicked={this.passFn}/> : null}
+                    attr1={this.props.lastBid} callback={this.passFn()}/> : null}
                     {this.displayLevel(2) ? <Button label={'2'} scale={this.props.containerHeight}/> : null}
                     {this.displayLevel(3) ? <Button label={'3'} scale={this.props.containerHeight}/> : null}
                     {this.displayLevel(4) ? <Button label={'4'} scale={this.props.containerHeight}/> : null}
@@ -111,6 +109,29 @@ class SuitButtons extends Component {
         };
         return Object.assign(this.divider.style, orStyle, ds);
     }
+
+    displaySuitButtons(level, lastBid) {
+        bidLevel = parseInt(lastBid.charAt(0));
+        bidSuit = lastBid.charAt(1);
+        if (level===bidLevel) {
+            if (bidSuit===c) {
+                showSuit = [false, true, true, true, true];
+            }
+            else if (bidSuit===d) {
+                showSuit = [false, false, true, true, true];
+            }
+            else if (bidSuit===h) {
+                showSuit = [false, false, false, true, true];
+            }
+            else if (bidSuit===s) {
+                showSuit = [false, false, false, false, true];
+            }
+            else {
+                showSuit = [true, true, true, true, true];
+            }
+        }
+    }
+
 
     render() {
         console.log('SuitButtons');
@@ -177,6 +198,10 @@ class Button extends Component {
                 backgroundImage: 'linear-gradient(rgb(233, 234, 241) 0%, rgb(106, 118, 208) 100%)',
                 fontWeight: 400
             },
+            // cb: function cb(event) {
+            //     render(<SuitButtons containerHeight={220} />, document.getElementById('suitButtonsID'));
+            // }
+            cb: null,
         }
     }
 
@@ -200,7 +225,9 @@ class Button extends Component {
         event.preventDefault;
         console.log('buttonClicked');
         window.skaap = event.currentTarget;
-        bidLevelOnClick(event)
+        console.log('this.button.cb');
+        console.log(this.button.cb);
+        this.button.cb(event);
         // render(<SuitButtons containerHeight={220} />, document.getElementById('suitButtonsID'));
     }
 
@@ -208,9 +235,11 @@ class Button extends Component {
 
     render() {
         console.log('Button Component');
+        (this.props.callback) ? this.button.cb=this.props.callback : this.button.cb=null;
+
         return (
             <button style={this.dsButton(this.props.scale, this.props.orStyle)}
-            onClick={this.buttonClicked} value={this.props.value} data-attr1={this.props.attr1}
+            onClick={this.buttonClicked.bind(this)} value={this.props.value} data-attr1={this.props.attr1}
             data-attr2={this.props.attr2}
             >
                 {this.props.label}
