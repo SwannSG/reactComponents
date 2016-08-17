@@ -28,6 +28,15 @@ class BidBox extends Component {
                 backgroundColor: 'green'
             },
         }
+        this.cbSuitButtons = function cbSuitButtons(event) {
+                var level = event.currentTarget.value;
+                var lastBid = event.currentTarget.getAttribute('data-attr1');
+                var containerHeight  = event.currentTarget.getAttribute('data-attr2');
+                render(
+                    <SuitButtons containerHeight={containerHeight} level={level} lastBid={lastBid} />,
+                    document.getElementById('suitButtonsID'));
+            }
+
     }
 
     dsContainer(x) {
@@ -55,12 +64,6 @@ class BidBox extends Component {
         return false;
     }
 
-    passFn() {
-        return function (event) {
-            console.log('passFn');
-            render(<SuitButtons containerHeight={220} />, document.getElementById('suitButtonsID'));
-        }
-    }
 
     render() {
         this.bidLevel = parseInt(this.props.lastBid.charAt(0));
@@ -78,8 +81,8 @@ class BidBox extends Component {
                 />
                 <Divider scale={this.props.containerHeight}/>
                 <div>
-                    {this.displayLevel(1) ? <Button label={'1'} value={1} scale={this.props.containerHeight} lastBid={this.props.lastBid}
-                    attr1={this.props.lastBid} callback={this.passFn()}/> : null}
+                    {this.displayLevel(1) ? <Button label={'1'} value={1} scale={this.props.containerHeight}
+                    lastBid={this.props.lastBid} callback={this.cbSuitButtons}/> : null}
                     {this.displayLevel(2) ? <Button label={'2'} scale={this.props.containerHeight}/> : null}
                     {this.displayLevel(3) ? <Button label={'3'} scale={this.props.containerHeight}/> : null}
                     {this.displayLevel(4) ? <Button label={'4'} scale={this.props.containerHeight}/> : null}
@@ -93,6 +96,8 @@ class BidBox extends Component {
         )
     }
 }
+
+
 
 
 class SuitButtons extends Component {
@@ -111,38 +116,46 @@ class SuitButtons extends Component {
     }
 
     displaySuitButtons(level, lastBid) {
+        console.log('displaySuitButtons');
+        console.log(level);
+        console.log(typeof(level));
+        console.log(lastBid);
         bidLevel = parseInt(lastBid.charAt(0));
         bidSuit = lastBid.charAt(1);
-        if (level===bidLevel) {
-            if (bidSuit===c) {
-                showSuit = [false, true, true, true, true];
+        console.log(bidLevel);
+        console.log(bidSuit);
+        console.log('*********');
+        if (parseInt(level)===bidLevel) {
+            if (bidSuit==='c') {
+                return [false, true, true, true, true];
             }
-            else if (bidSuit===d) {
-                showSuit = [false, false, true, true, true];
+            else if (bidSuit==='d') {
+                return [false, false, true, true, true];
             }
-            else if (bidSuit===h) {
-                showSuit = [false, false, false, true, true];
+            else if (bidSuit==='h') {
+                return [false, false, false, true, true];
             }
-            else if (bidSuit===s) {
-                showSuit = [false, false, false, false, true];
-            }
-            else {
-                showSuit = [true, true, true, true, true];
+            else if (bidSuit==='s') {
+                return [false, false, false, false, true];
             }
         }
+        return [true, true, true, true, true];
     }
 
 
     render() {
         console.log('SuitButtons');
+        var showSuit = this.displaySuitButtons(this.props.level, this.props.lastBid);
+        console.log(showSuit);
         return (
             <div>
-                <Button label={'\u2663'} scale={this.props.containerHeight}/>
-                <Button label={'\u2666'} scale={this.props.containerHeight} orStyle={{
-                    color: 'red',}}/>
-                <Button label={'\u2665'} scale={this.props.containerHeight} orStyle={{
-                    color: 'red',}}/>
-                <Button label={'\u2660'} scale={this.props.containerHeight} cb={'buttonSpades'}/>
+                { showSuit[0] ? <Button label={'\u2663'} scale={this.props.containerHeight}/> : null }
+                { showSuit[1] ? <Button label={'\u2666'} scale={this.props.containerHeight} orStyle={{
+                    color: 'red',}}/> : null }
+                { showSuit[2] ? <Button label={'\u2665'} scale={this.props.containerHeight} orStyle={{
+                    color: 'red',}}/> : null }
+                { showSuit[3] ? <Button label={'\u2660'} scale={this.props.containerHeight} cb={'buttonSpades'}/> : null }
+                { showSuit[4] ? <Button label={'nt'} scale={this.props.containerHeight} cb={'buttonSpades'}/> : null }
             </div>
         )
     }
@@ -225,13 +238,9 @@ class Button extends Component {
         event.preventDefault;
         console.log('buttonClicked');
         window.skaap = event.currentTarget;
-        console.log('this.button.cb');
-        console.log(this.button.cb);
         this.button.cb(event);
         // render(<SuitButtons containerHeight={220} />, document.getElementById('suitButtonsID'));
     }
-
-
 
     render() {
         console.log('Button Component');
@@ -239,25 +248,11 @@ class Button extends Component {
 
         return (
             <button style={this.dsButton(this.props.scale, this.props.orStyle)}
-            onClick={this.buttonClicked.bind(this)} value={this.props.value} data-attr1={this.props.attr1}
-            data-attr2={this.props.attr2}
+            onClick={this.buttonClicked.bind(this)} value={this.props.value} data-attr1={this.props.lastBid}
+            data-attr2={this.props.scale}
             >
                 {this.props.label}
             </button>
         )
     }
 }
-
-// class SuitButton extends Button {
-//     constructor() {
-//         super();
-//     }
-//
-//     render() {
-//         return (
-//             <button style={this.dsButton(this.props.scale, this.props.orStyle)}>
-//                 {this.props.label}
-//             </button>
-//         )
-//     }
-// }
