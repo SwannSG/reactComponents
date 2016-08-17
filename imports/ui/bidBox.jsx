@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { render, unmountComponentAtNode } from 'react-dom';
+import { render } from 'react-dom';
 // import { Button, ButtonToolbar, Well } from 'react-bootstrap';
 import './bidBox.css'
 
@@ -18,11 +18,6 @@ class BidBox extends Component {
                 backgroundImage: 'linear-gradient(rgb(233, 234, 241) 0%, rgb(106, 118, 208) 100%)'
             }
         }
-        this.anyButton = {
-            style: {
-
-            },
-        }
         this.passButton = {
             style: {
                 backgroundColor: 'green'
@@ -38,7 +33,16 @@ class BidBox extends Component {
                     <SuitButtons containerHeight={scale} level={level} lastBid={lastBid} />,
                     document.getElementById('suitButtonsID'));
             }
-
+        // callback for Pass button
+        this.cbPassButton = function cbPassButton(event) {
+            var bid = 'pass';
+            console.log('bid: ' + bid);
+        }
+        // callback for Dbl button
+        this.cbDblButton = function cbDblButton(event) {
+            var bid = 'dbl';
+            console.log('bid: ' + bid);
+        }
     }
 
     dsContainer(x) {
@@ -54,6 +58,7 @@ class BidBox extends Component {
     }
 
     displayLevel(level) {
+        // determine what bid level buttons should be displayed
         if (this.bidLevel < level) {
             return true;
         }
@@ -68,6 +73,10 @@ class BidBox extends Component {
 
 
     render() {
+        // BidBox parent container
+        // this.props
+        //      lastBid             last bid that was made
+        //      containerHeight     used as a scale factor, to size the component
         this.bidLevel = parseInt(this.props.lastBid.charAt(0));
         this.bidSuit = this.props.lastBid.charAt(1);
         return (
@@ -75,11 +84,12 @@ class BidBox extends Component {
                 <Button label={'Pass'} scale={this.props.containerHeight} orStyle={{
                     color: 'white',
                     backgroundImage: 'linear-gradient(rgb(61, 162, 27) 0%, rgb(105, 220, 18) 100%)'}}
-                    onClickFunction={function() {console.log('hello');}}
+                    callback={this.cbPassButton}
                 />
                 <Button label={'Dbl'} scale={this.props.containerHeight} orStyle={{
                     color: 'white',
                     backgroundImage: 'linear-gradient(rgb(167, 46, 10) 0%, rgb(249, 26, 3) 100%)'}}
+                    callback={this.cbDblButton}
                 />
                 <Divider scale={this.props.containerHeight}/>
                 <div>
@@ -101,17 +111,18 @@ class BidBox extends Component {
 }
 
 
-
-
-
-
-
-
 class Button extends Component {
+    // Basic button
+    // this.props
+    //      callback:   callback function to execute when button clicked
+    //      scale:      sets size of button
+    //      orStyle:    any overide or additional styles
+    //      value:      value of the button
+    //      label:      label on the button
     constructor() {
         super();
         this.button = {
-            // static style
+            // static styles
             style: {
                 display: 'inline-block',
                 fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif',
@@ -125,6 +136,7 @@ class Button extends Component {
                 fontWeight: 400
             },
             // callback function to be run when buttonClicked
+            // passed in as this.props.callback
             cb: null,
         }
     }
@@ -146,7 +158,6 @@ class Button extends Component {
     }
 
     buttonClicked(event) {
-        console.log('buttonClicked');
         event.preventDefault;
         // run the callback
         this.button.cb(event);
@@ -158,8 +169,7 @@ class Button extends Component {
 
         return (
             <button style={this.dsButton(this.props.scale, this.props.orStyle)}
-            onClick={this.buttonClicked.bind(this)} value={this.props.value} data-attr1={this.props.lastBid}
-            data-attr2={this.props.scale}
+            onClick={this.buttonClicked.bind(this)} value={this.props.value}
             >
                 {this.props.label}
             </button>
@@ -171,9 +181,10 @@ class Button extends Component {
 class LevelButton extends Button {
     // LevelButton requires following props
     //      callback:   callback function to execute when LevelButton is clicked
+    //      lastBid:    the value of lastBid
+    //      orStyle:    overide style
     //      scale:      scale for size of button
     //      value:      value associated with the button
-    //      lastBid:    the value of lastBid
 
     render() {
         (this.props.callback) ? this.button.cb=this.props.callback : this.button.cb=null;
@@ -194,6 +205,7 @@ class SuitButton extends Button {
     //      callback:   callback function to execute when button is clicked
     //      label:      label for button
     //      level:      the value selected for level of bid
+    //      orStyle:    overide style
     //      scale:      sizes the element
     //      value:      value associated with the button
 
@@ -209,8 +221,6 @@ class SuitButton extends Button {
         );
     }
 }
-
-
 
 
 class Divider extends Component {
@@ -238,6 +248,12 @@ class Divider extends Component {
 }
 
 class SuitButtons extends Component {
+    // Buttons for SuitButtons
+    //      level           level button just clicked
+    //      lastBid         previous bid
+    //      orStyle         overide style
+    //      scale           sizes the element
+    //      value           value of the button
     constructor() {
         super();
         this.suitButtons = {
@@ -278,6 +294,8 @@ class SuitButtons extends Component {
         }
         return [true, true, true, true, true];
     }
+
+
 
     render() {
         var showSuit = this.displaySuitButtons(this.props.level, this.props.lastBid);
