@@ -1,6 +1,6 @@
 // baseComponents contains basic components that can be built on
 // Always create a variant of a base component from the base component
-// The variant is normal specific to a Problem Domain
+// The variant is used for a specific Problem Domain
 // class NewVariant extends BaseComponent
 
 import React, { Component, PropTypes } from 'react'
@@ -33,7 +33,7 @@ class Button extends Component {
         this.baseStyles = baseStyles.button;
     }
 
-    // static not currently supported in Meteor 1.4
+    // static not currently supported in Meteor 1.4 ******************
     // We use a work around
     //      Button.propTypes = {}
     // static propTypes = {
@@ -49,6 +49,7 @@ class Button extends Component {
     //     label: 'Label',
     //     style: {}
     // };
+    // end static ****************************************************
 
     computeStyle() {
         // merges all CSS
@@ -68,7 +69,7 @@ class Button extends Component {
     render() {
         console.log('Button Base');
         return (
-            <button style={this.computeStyle()} onClick={null} value={this.props.value}>
+            <button style={this.computeStyle()} onClick={this.props.onclick} value={this.props.value}>
                 {this.props.label}
             </button>
         );
@@ -77,16 +78,18 @@ class Button extends Component {
 
 // workaround because static inside component does not work ******************
 Button.defaultProps = {
-    size: 50,
-    value: 'value',
     label: 'Label',
-    style: {}
+    onclick: function() {},             //function does nothing, but prevent error messes from propTypes
+    size: 50,
+    style: {},
+    value: 'value',
 };
 
 Button.propTypes = {
-    size: PropTypes.number,
-    value: PropTypes.string,
     label: PropTypes.string,
-    style: PropTypes.object
+    onclick: PropTypes.func,
+    size: PropTypes.number,
+    style: PropTypes.object,
+    value: PropTypes.string,
 };
 // end of workaround because static inside component does not work ************

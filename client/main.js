@@ -7,7 +7,7 @@ import { bm } from '../imports/custom/myJsLib.js'
 import { BidBox } from '../imports/ui/bidBox.jsx';
 import { Container } from '../imports/ui/layout.jsx';
 import { Button } from '../imports/ui/button.jsx';
-
+import { Card } from '../imports/ui/card.jsx';
 
 bm.shuffle();
 
@@ -24,9 +24,8 @@ Meteor.startup(() => {
     // render(<Container heightPercent={0.2} widthPercent={0.334}
     //        viewportHeight={window.innerHeight} viewportWidth={window.innerWidth}/>,
     //        document.getElementById('app'));
-    render(<Button size={45} value={'value'} label={'label'} style={{}} />, document.getElementById('app'));
+    // render(<Button size={45} value={'value'} label={'label'} style={{}} />, document.getElementById('app'));
 
-    // render(<Button size={65} />, document.getElementById('app'));
+    render(<Card/>, document.getElementById('app'));
     render(<Button size={65} />, document.getElementById('appA'));
-
 });
