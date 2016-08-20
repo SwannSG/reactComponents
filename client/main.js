@@ -1,13 +1,11 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
-import { render, unmountComponentAtNode } from 'react-dom';
+import { render } from 'react-dom';
 
 import { East, North, South, West } from '../imports/ui/hand.jsx';
 import { bm } from '../imports/custom/myJsLib.js'
-import { BidBox } from '../imports/ui/bidBox.jsx';
-import { Container } from '../imports/ui/layout.jsx';
-import { Button } from '../imports/ui/button.jsx';
-import { Card } from '../imports/ui/card.jsx';
+import { Button } from '../imports/ui/button.jsx'
+import { NewBidBox } from '../imports/ui/newBidBox.jsx'
 
 bm.shuffle();
 
@@ -26,6 +24,6 @@ Meteor.startup(() => {
     //        document.getElementById('app'));
     // render(<Button size={45} value={'value'} label={'label'} style={{}} />, document.getElementById('app'));
 
-    render(<Card/>, document.getElementById('app'));
-    render(<Button size={65} />, document.getElementById('appA'));
+    render(<NewBidBox size={165} lastBid={'2n'}/>, document.getElementById('app'));
+    // render(<Button size={30} />, document.getElementById('appA'));
 });

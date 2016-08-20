@@ -5,13 +5,15 @@
 
 import React, { Component, PropTypes } from 'react'
 import { render } from 'react-dom'
+import Radium from 'radium'
+
 export { Button }
 
 // we try to deliver components with in-line style
 // we only use a stylesheet when the css property is not supported by ReactJS
 // we maintain baseStyles here
-var baseStyles = {}
-baseStyles.button = {
+const styles = {}
+styles.base = {
     display: 'inline-block',
     fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif',
     borderRadius: '5px',
@@ -23,6 +25,21 @@ baseStyles.button = {
     backgroundImage: 'linear-gradient(rgb(233, 234, 241) 0%, rgb(106, 118, 208) 100%)',
     fontWeight: 400
 }
+styles.pass = {
+    // pass button style
+    color: 'white',
+    backgroundImage: 'linear-gradient(rgb(61, 162, 27) 0%, rgb(105, 220, 18) 100%)'
+}
+
+styles.dbl = {
+    // Dbl button style
+    color: 'white',
+    backgroundImage: 'linear-gradient(rgb(167, 46, 10) 0%, rgb(249, 26, 3) 100%)'
+}
+
+styles.red = {
+    color:'red',
+}
 
 class Button extends Component {
     // Basic button
@@ -30,7 +47,6 @@ class Button extends Component {
 
     constructor(props) {
         super(props);
-        this.baseStyles = baseStyles.button;
     }
 
     // static not currently supported in Meteor 1.4 ******************
@@ -51,33 +67,33 @@ class Button extends Component {
     // };
     // end static ****************************************************
 
-    computeStyle() {
-        // merges all CSS
-        // merges styles in precedence order
-        //     1. computed dynamicStyles css
-        //     2. overide style passed as a props.style
-        //     3. baseStyles
-        var dynamicStyles = {
-            margin: 0.1 * this.props.size  + 'px',
+    dynamicStyles() {
+        // css property values that are calculated at runtime
+        return {
+            margin: 0.15 * this.props.size  + 'px',
             padding: 0.106 * this.props.size + 'px ' + 0.106 * this.props.size + 'px',
             border: 0.0165 * this.props.size + 'px solid transparent',
             fontSize: 0.44 * this.props.size +'px'
-        }
-        return Object.assign(this.baseStyles, this.props.style, dynamicStyles)
+        };
     }
 
     render() {
         console.log('Button Base');
         return (
-            <button style={this.computeStyle()} onClick={this.props.onclick} value={this.props.value}>
+            <button style={[styles.base, styles[this.props.cls], this.dynamicStyles()]}
+                onClick={this.props.updateState} value={this.props.value} >
                 {this.props.label}
             </button>
         );
     }
 }
 
+Button = Radium(Button);                //@Radium decorator does not work
+
+
 // workaround because static inside component does not work ******************
 Button.defaultProps = {
+    cls: '',
     label: 'Label',
     onclick: function() {},             //function does nothing, but prevent error messes from propTypes
     size: 50,
@@ -86,6 +102,7 @@ Button.defaultProps = {
 };
 
 Button.propTypes = {
+    cls: PropTypes.string,
     label: PropTypes.string,
     onclick: PropTypes.func,
     size: PropTypes.number,
