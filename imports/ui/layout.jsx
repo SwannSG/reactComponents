@@ -11,98 +11,117 @@ styles.base = {
     boxSizing: 'border-box',
 }
 
+const dimensions = {
+    navHeightFactor: 0.15,              // height of 'nav'
+    rhsWidthFactor: 0.275,              // width of 'rhs'
+    ccWidthFactor: 0.60,
+}
+
+
 class Layout extends Component {
     constructor(props) {
         super(props);
     }
 
     dynamicStyles() {
-        var dimensions = {}
-        dimensions.navHeight = 0.15;            // height of nav
-        dimensions.rhsWidth = 0.275;            // width of RHS
-        dimensions.lnHeight = 0.275;            // height of ln,cn,rn,ls,cs,rs
-        dimensions.lnWidth = 0.2;               // width of ln,rn,lc,rc,ls,rs
+        var navHeight = dimensions.navHeightFactor * this.props.vh;
+        var rhsWidth = dimensions.rhsWidthFactor * this.props.vw;
+        var mainWidth = this.props.vw - rhsWidth;
+        var mainHeight = this.props.vh - navHeight;
+        if (dimensions.ccWidthFactor >= mainHeight/mainWidth) {
+            console.log('dimensions.ccWidthFactor is wrong');
+        }
+        var leftMainWidth = mainWidth * (1 - dimensions.ccWidthFactor)/2;
+        var lnHeight = (mainHeight - dimensions.ccWidthFactor * mainWidth)/2
+        var centerMainWidth = mainWidth - 2 * leftMainWidth;
+        var ccHeight = mainHeight - 2 * leftMainWidth;
 
-        var mainHeight = this.props.vh*(1-dimensions.navHeight);
-        var mainWidth = this.props.vw*(1-dimensions.rhsWidth);
-        var lnHeight = mainHeight*dimensions.lnHeight;
-        var lnWidth = dimensions.lnWidth * mainWidth;
+        // nav panel
         styles.nav = {
-            height: this.props.vh*dimensions.navHeight,
+            height: navHeight,
             backgroundColor: 'blue'
         }
+        // main panel
         styles.main = {
             float: 'left',
             height: mainHeight,
             width: mainWidth,
-            backgroundColor: 'yellow'
+            backgroundColor: 'gray'
         }
+        // right panel
         styles.rhs = {
             float: 'right',
             height: mainHeight,
-            width: this.props.vw*(dimensions.rhsWidth),
-            backgroundColor: 'green'
-        }
-        // north row
-        styles.ln = {
-            float: 'left',
-            height: lnHeight,
-            width: lnWidth,
+            width: rhsWidth,
             backgroundColor: 'red'
         }
-        styles.cn = {
+        // main-left-column
+        styles.leftMain = {
             float: 'left',
-            height: lnHeight,
-            width: mainWidth - 2*lnWidth,
-            backgroundColor: 'purple'
-        }
-        styles.rn = {
-            float: 'left',
-            height: lnHeight,
-            width: lnWidth,
-            backgroundColor: 'black'
-        }
-        // end north row
-        // center row
-        styles.lc = {
-            float: 'left',
-            height: mainHeight - 2*lnHeight,
-            width: lnWidth,
-            backgroundColor: 'brown'
-        }
-        styles.cc = {
-            float: 'left',
-            height: mainHeight - 2*lnHeight,
-            width: mainWidth - 2*lnWidth,
-            backgroundColor: 'indigo'
-        }
-        styles.rc = {
-            float: 'left',
-            height: mainHeight - 2*lnHeight,
-            width: lnWidth,
+            height: mainHeight,
+            width: leftMainWidth,
             backgroundColor: 'gray'
         }
-        // end center row
-        // south row
-        styles.ls = {
+        // main-center-column
+        styles.centerMain = {
             float: 'left',
+            height: mainHeight,
+            width: centerMainWidth,
+            backgroundColor: 'white',
+        }
+        // main-right-column
+        styles.rightMain = {
+            float: 'left',
+            height: mainHeight,
+            width: leftMainWidth,
+            backgroundColor: 'gray'
+        }
+
+        // main-left-column block
+        styles.ln = {
             height: lnHeight,
-            width: lnWidth,
-            backgroundColor: 'red'
+            backgroundColor: 'green'
+        }
+        styles.lc = {
+            height: centerMainWidth,
+            backgroundColor: 'black',
+        }
+        styles.ls = {
+            height: lnHeight,
+            backgroundColor: 'green',
+        }
+        // end main-left-column block
+
+        // main-center-column block
+        styles.cn = {
+            height: leftMainWidth,
+            backgroundColor: 'yellow'
+        }
+        styles.cc = {
+            height: ccHeight,
+            backgroundColor: 'blue',
         }
         styles.cs = {
-            float: 'left',
-            height: lnHeight,
-            width: mainWidth - 2*lnWidth,
-            backgroundColor: 'purple'
+            height: leftMainWidth,
+            backgroundColor: 'yellow',
         }
-        styles.rs = {
-            float: 'left',
+        // end main-center-column block
+
+        // main-right-column block
+        styles.ln = {
             height: lnHeight,
-            width: lnWidth,
             backgroundColor: 'black'
         }
-        // end south row
+        styles.lc = {
+            height: centerMainWidth,
+            backgroundColor: 'green',
+        }
+        styles.ls = {
+            height: lnHeight,
+            backgroundColor: 'black',
+        }
+        // end main-right-column block
+
 
     }
 
@@ -118,22 +137,29 @@ class Layout extends Component {
                     <p>{styles.main.width}</p>
                 </div>
                 <div id="main" style={[styles.base, styles.main]}>
-                    <div style={[styles.base]}>
+                    <div id="mainleft" style={[styles.base, styles.leftMain]}>
                         <div id="ln" style={[styles.base, styles.ln]}>
-                            <p>{styles.main.width + styles.rhs.width}</p>
                         </div>
-                        <div id="cn" style={[styles.base, styles.cn]}></div>
-                        <div id="rn" style={[styles.base, styles.rn]}></div>
+                        <div id="lc" style={[styles.base, styles.lc]}>
+                        </div>
+                        <div id="ls" style={[styles.base, styles.ls]}>
+                        </div>
                     </div>
-                    <div style={[styles.base]}>
-                        <div id="lc" style={[styles.base, styles.lc]}></div>
-                        <div id="cc" style={[styles.base, styles.cc]}></div>
-                        <div id="rc" style={[styles.base, styles.rc]}></div>
+                    <div id="maincenter" style={[styles.base, styles.centerMain]}>
+                        <div id="cn" style={[styles.base, styles.cn]}>
+                        </div>
+                        <div id="cc" style={[styles.base, styles.cc]}>
+                        </div>
+                        <div id="cs" style={[styles.base, styles.cs]}>
+                        </div>
                     </div>
-                    <div style={[styles.base]}>
-                        <div id="ls" style={[styles.base, styles.ls]}></div>
-                        <div id="cs" style={[styles.base, styles.cs]}></div>
-                        <div id="rs" style={[styles.base, styles.rs]}></div>
+                    <div id="mainright" style={[styles.base, styles.rightMain]}>
+                    <div id="rn" style={[styles.base, styles.ln]}>
+                    </div>
+                    <div id="rc" style={[styles.base, styles.lc]}>
+                    </div>
+                    <div id="rs" style={[styles.base, styles.ls]}>
+                    </div>
                     </div>
                 </div>
                 <div id="rhs" style={[styles.base, styles.rhs]}></div>
