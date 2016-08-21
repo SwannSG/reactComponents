@@ -6,7 +6,8 @@ import { Divider } from './divider.jsx'
 import { LevelButtons } from './levelButtons.jsx'
 import { SuitButtons } from './suitButtons.jsx'
 
-export { NewBidBox }
+export { BidBox }
+
 
 const styles = {};
 styles.base = {
@@ -17,11 +18,12 @@ styles.base = {
         backgroundImage: 'linear-gradient(rgb(233, 234, 241) 0%, rgb(106, 118, 208) 100%)'
 };
 
-class NewBidBox extends Component {
+class BidBox extends Component {
     constructor(props) {
         super(props);
         this.state = {};
         this.state.cycle = 'initial';
+        // provides reference to method updateState(e), always executed in the parent
         this.updateState = this.updateState.bind(this);
         this.bidLevel = parseInt(this.props.lastBid.charAt(0));
         this.bidSuit = this.props.lastBid.charAt(1);
@@ -36,29 +38,26 @@ class NewBidBox extends Component {
     }
 
     updateState(e) {
-        console.log('updateState')
-        console.log(e.currentTarget.value);
-        console.log('********');
+        var bid;
         if (e.currentTarget.value === 'pass' || e.currentTarget.value === 'dbl') {
+            // pass or dbl, end here
+            bid = e.currentTarget.value;
             this.setState({cycle:'exit'});
         }
         else {
             if (e.currentTarget.value==='c' || e.currentTarget.value==='d' || e.currentTarget.value==='h' || e.currentTarget.value==='s' || e.currentTarget.value==='n') {
-                // we have a new bid, end here
+                // we have a new bid, suit is selected, end here
                 var bid = this.state.level + e.currentTarget.value   // level + suit
-                console.log(bid);
                 this.setState({cycle:'exit'});
             }
             else {
-                // level is set
+                // level is set, wait for suit
                 this.setState({cycle:'levelSelected', level:e.currentTarget.value});
             }
         }
     }
 
     render() {
-        console.log('NewBidBox');
-
         if (this.state.cycle==='exit') {
             // set null in DOM
             return null;
@@ -75,14 +74,15 @@ class NewBidBox extends Component {
     }
 }
 
-NewBidBox = Radium(NewBidBox);
+// allows use of Radium functionality
+BidBox = Radium(BidBox);
 
-NewBidBox.defaultProps = {
+BidBox.defaultProps = {
     aspectRatio: 1.618,                  // width:height, golden ratio = 1.618
     size: 100,
 };
 
-NewBidBox.propTypes = {
+BidBox.propTypes = {
     aspectRatio: PropTypes.number,
     lastBid: PropTypes.string.isRequired,
     size: PropTypes.number,

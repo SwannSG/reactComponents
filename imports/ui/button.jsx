@@ -1,8 +1,3 @@
-// baseComponents contains basic components that can be built on
-// Always create a variant of a base component from the base component
-// The variant is used for a specific Problem Domain
-// class NewVariant extends BaseComponent
-
 import React, { Component, PropTypes } from 'react'
 import { render } from 'react-dom'
 import Radium from 'radium'

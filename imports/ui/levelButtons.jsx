@@ -24,7 +24,6 @@ class LevelButtons extends Component {
         return false;
     }
 
-
     render() {
         this.bidLevel = parseInt(this.props.lastBid.charAt(0));
         this.bidSuit = this.props.lastBid.charAt(1);
