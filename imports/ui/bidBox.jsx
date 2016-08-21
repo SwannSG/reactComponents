@@ -21,8 +21,10 @@ styles.base = {
 class BidBox extends Component {
     constructor(props) {
         super(props);
+        // setup state
         this.state = {};
         this.state.cycle = 'initial';
+        // end setup state
         // provides reference to method updateState(e), always executed in the parent
         this.updateState = this.updateState.bind(this);
         this.bidLevel = parseInt(this.props.lastBid.charAt(0));
@@ -33,7 +35,8 @@ class BidBox extends Component {
         return {
                 height: this.props.size + 'px',
                 width: this.props.aspectRatio * this.props.size  + 'px',
-                padding: this.props.size * 0.1  + 'px'
+                padding: this.props.size * 0.1  + 'px',
+                paddingTop: this.props.size * 0.08  + 'px',
             };
     }
 
@@ -63,12 +66,13 @@ class BidBox extends Component {
             return null;
         }
         return (
-            <div size={130} style={[styles.base, this.dynamicStyles()]}>
-               <Button cls="pass" label="Pass" size={40} value='pass' updateState={this.updateState}/>
-               <Button cls="dbl" label="Dbl" size={40} value='dbl' updateState={this.updateState}/>
-               <Divider size={100} />
-               <LevelButtons lastBid={this.props.lastBid} size={40} updateState={this.updateState}/>
-               {(this.state.cycle==='levelSelected') ? <SuitButtons lastBid={this.props.lastBid} levelSelected={parseInt(this.state.level)} size={40} updateState={this.updateState}/> : null}
+            <div size={this.props.size} style={[styles.base, this.dynamicStyles()]}>
+               <Button cls="pass" label="Pass" size={this.props.size*0.25} value='pass' updateState={this.updateState}/>
+               <Button cls="dbl" label="Dbl" size={this.props.size*0.25} value='dbl' updateState={this.updateState}/>
+               <Divider size={this.props.size*0.72} />
+               <LevelButtons lastBid={this.props.lastBid} size={this.props.size*0.25} updateState={this.updateState}/>
+               <Divider size={this.props.size*0.72} />
+               {(this.state.cycle==='levelSelected') ? <SuitButtons lastBid={this.props.lastBid} levelSelected={parseInt(this.state.level)} size={this.props.size*0.25} updateState={this.updateState}/> : null}
             </div>
         );
     }

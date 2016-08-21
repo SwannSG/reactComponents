@@ -5,7 +5,7 @@ import { render } from 'react-dom';
 import { East, North, South, West } from '../imports/ui/hand.jsx';
 import { bm } from '../imports/custom/myJsLib.js'
 import { Button } from '../imports/ui/button.jsx'
-import { BidBox } from '../imports/ui/BidBox.jsx'
+import { BidBox } from '../imports/ui/bidBox.jsx'
 
 bm.shuffle();
 
@@ -24,6 +24,6 @@ Meteor.startup(() => {
     //        document.getElementById('app'));
     // render(<Button size={45} value={'value'} label={'label'} style={{}} />, document.getElementById('app'));
 
-    render(<BidBox size={165} lastBid={'2n'}/>, document.getElementById('app'));
+    render(<BidBox size={140} lastBid={'1h'}/>, document.getElementById('app'));
     // render(<Button size={30} />, document.getElementById('appA'));
 });
