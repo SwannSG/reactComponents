@@ -10,18 +10,15 @@ import { Layout } from '../imports/ui/layout.jsx'
 
 bm.shuffle();
 
-$('body').css( "margin", "0" );
-$('body').css( "padding", "0" );
 
 Meteor.startup(() => {
     console.log('Meteor.startup');
-
-    // const onWindowResize = function() {
-    //     console.log('onWindowResize');
-    //     const vw = $(window).width();
-    //     const vh = $(window).height();
-    //     render(<Layout vh={window.innerHeight} vw={window.innerWidth}/>, document.getElementById('app'));
-    // };
+    window.addEventListener('resize',
+        _.debounce(function windowResize(){
+            console.log('Window resize event');
+            render(<Layout vh={$(window).height()} vw={$(window).width()}/>, document.getElementById('app'));
+        }, 200)
+    );
 
 
 
@@ -41,7 +38,13 @@ Meteor.startup(() => {
     // render(<BidBox size={140} lastBid={'1h'}/>, document.getElementById('app'));
     // render(<Button size={30} />, document.getElementById('appA'));
 
-    render(<Layout vh={window.innerHeight} vw={window.innerWidth}/>, document.getElementById('app'));
+    console.log($(window).width());
+    $(document).ready(function () {
+        console.log('document is ready');
+        console.log($(window).width());
+        render(<Layout vh={$(window).height()} vw={$(window).width()}/>, document.getElementById('app'));
+    })
+
 
     console.log('render');
 

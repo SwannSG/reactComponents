@@ -8,6 +8,7 @@ const styles = {}
 styles.base = {
     margin: '0',
     paddding: '0',
+    boxSizing: 'border-box',
 }
 
 class Layout extends Component {
@@ -17,16 +18,15 @@ class Layout extends Component {
 
     dynamicStyles() {
         var dimensions = {}
-        dimensions.navHeight = 0.15;
-        dimensions.rhsWidth = 0.275;
-        dimensions.lnHeight = 0.275;              // of main height
-        dimensions.lnWidth = 0.2;               // of main width
+        dimensions.navHeight = 0.15;            // height of nav
+        dimensions.rhsWidth = 0.275;            // width of RHS
+        dimensions.lnHeight = 0.275;            // height of ln,cn,rn,ls,cs,rs
+        dimensions.lnWidth = 0.2;               // width of ln,rn,lc,rc,ls,rs
 
         var mainHeight = this.props.vh*(1-dimensions.navHeight);
         var mainWidth = this.props.vw*(1-dimensions.rhsWidth);
         var lnHeight = mainHeight*dimensions.lnHeight;
         var lnWidth = dimensions.lnWidth * mainWidth;
-
         styles.nav = {
             height: this.props.vh*dimensions.navHeight,
             backgroundColor: 'blue'
@@ -80,7 +80,7 @@ class Layout extends Component {
             float: 'left',
             height: mainHeight - 2*lnHeight,
             width: lnWidth,
-            backgroundColor: 'lightblue'
+            backgroundColor: 'gray'
         }
         // end center row
         // south row
@@ -111,20 +111,26 @@ class Layout extends Component {
         console.log('Layout');
         this.dynamicStyles();
         return (
-            <div>
-                <div id="nav" style={[styles.base, styles.nav]}></div>
+            <div style={[styles.base]}>
+                <div id="nav" style={[styles.base, styles.nav]}>
+                    <p>{this.props.vw}</p>
+                    <p>{styles.rhs.width}</p>
+                    <p>{styles.main.width}</p>
+                </div>
                 <div id="main" style={[styles.base, styles.main]}>
-                    <div>
-                        <div id="ln" style={[styles.base, styles.ln]}></div>
+                    <div style={[styles.base]}>
+                        <div id="ln" style={[styles.base, styles.ln]}>
+                            <p>{styles.main.width + styles.rhs.width}</p>
+                        </div>
                         <div id="cn" style={[styles.base, styles.cn]}></div>
                         <div id="rn" style={[styles.base, styles.rn]}></div>
                     </div>
-                    <div>
+                    <div style={[styles.base]}>
                         <div id="lc" style={[styles.base, styles.lc]}></div>
                         <div id="cc" style={[styles.base, styles.cc]}></div>
                         <div id="rc" style={[styles.base, styles.rc]}></div>
                     </div>
-                    <div>
+                    <div style={[styles.base]}>
                         <div id="ls" style={[styles.base, styles.ls]}></div>
                         <div id="cs" style={[styles.base, styles.cs]}></div>
                         <div id="rs" style={[styles.base, styles.rs]}></div>
