@@ -43,4 +43,6 @@ Meteor.startup(() => {
 
     render(<Layout vh={window.innerHeight} vw={window.innerWidth}/>, document.getElementById('app'));
 
+    console.log('render');
+
 });

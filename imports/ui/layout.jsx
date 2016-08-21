@@ -18,8 +18,8 @@ class Layout extends Component {
     dynamicStyles() {
         var dimensions = {}
         dimensions.navHeight = 0.15;
-        dimensions.rhsWidth = 0.3;
-        dimensions.lnHeight = 0.2;              // of main height
+        dimensions.rhsWidth = 0.275;
+        dimensions.lnHeight = 0.275;              // of main height
         dimensions.lnWidth = 0.2;               // of main width
 
         var mainHeight = this.props.vh*(1-dimensions.navHeight);
@@ -108,6 +108,8 @@ class Layout extends Component {
 
 
     render() {
+        console.log('Layout');
+        this.dynamicStyles();
         return (
             <div>
                 <div id="nav" style={[styles.base, styles.nav]}></div>
