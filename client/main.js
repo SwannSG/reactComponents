@@ -43,11 +43,14 @@ Meteor.startup(() => {
     //     console.log('document is ready');
     //     console.log($(window).width());
     // })
+
+    console.log(globalDimensions);
+
     render(<Layout vh={$(window).height()} vw={$(window).width()}/>, document.getElementById('app'));
-    render(<North cardheight={globalDimensions.handHeight} hand={ bm.north } hpos={'center'} meta={bm.handSummary(bm.north)} faceup={true} vulnerable={false}/>, document.getElementById('cn'));
-    render(<South cardheight={globalDimensions.handHeight} hand={ bm.south } hpos={'center'} meta={bm.handSummary(bm.south)} faceup={true} vulnerable={false}/>, document.getElementById('cs'));
-    render(<East cardheight={globalDimensions.handHeight} hand={ bm.east } hpos={'center'} meta={bm.handSummary(bm.east)} faceup={false} vulnerable={false}/>, document.getElementById('rc'));
-    render(<West cardheight={globalDimensions.handHeight} hand={ bm.west } hpos={'center'} meta={bm.handSummary(bm.west)} faceup={false} vulnerable={false}/>, document.getElementById('lc'));
-    render(<BidBox size={globalDimensions.rhssHeight*0.95} lastBid={'1h'}/>, document.getElementById('rhss'));
+    render(<North cardheight={globalDimensions.cn.height} hand={ bm.north } hpos={'center'} meta={bm.handSummary(bm.north)} faceup={true} vulnerable={false}/>, document.getElementById('cn'));
+    render(<South cardheight={globalDimensions.cn.height} hand={ bm.south } hpos={'center'} meta={bm.handSummary(bm.south)} faceup={true} vulnerable={false}/>, document.getElementById('cs'));
+    render(<East cardheight={globalDimensions.cn.height} hand={ bm.east } hpos={'center'} meta={bm.handSummary(bm.east)} faceup={false} vulnerable={false}/>, document.getElementById('rc'));
+    render(<West cardheight={globalDimensions.cn.height} hand={ bm.west } hpos={'center'} meta={bm.handSummary(bm.west)} faceup={false} vulnerable={false}/>, document.getElementById('lc'));
+    render(<BidBox size={globalDimensions.rhss.height*0.95} parentDim={globalDimensions.rhss} lastBid={'1h'}/>, document.getElementById('rhss'));
 
 });

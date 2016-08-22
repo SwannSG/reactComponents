@@ -16,6 +16,8 @@ const dimensions = {
     rhsWidthFactor: 0.275,              // width of 'rhs'
     ccWidthFactor: 0.55,
     rhsnHeightFactor: 0.7,
+    topFootFactor: 0.01,
+    topHeightFactor: 0.01,
 }
 
 class Layout extends Component {
@@ -26,8 +28,10 @@ class Layout extends Component {
     dynamicStyles() {
         var navHeight = dimensions.navHeightFactor * this.props.vh;
         var rhsWidth = dimensions.rhsWidthFactor * this.props.vw;
+        var topHeight = dimensions.topHeightFactor * this.props.vh
+        var footHeight = dimensions.topFootFactor * this.props.vh
         var mainWidth = this.props.vw - rhsWidth;
-        var mainHeight = this.props.vh - navHeight;
+        var mainHeight = this.props.vh - navHeight - footHeight - topHeight;
         if (dimensions.ccWidthFactor >= mainHeight/mainWidth) {
             console.log('dimensions.ccWidthFactor is wrong');
         }
@@ -43,6 +47,17 @@ class Layout extends Component {
             height: navHeight,
             backgroundColor: 'blue'
         }
+
+        styles.top = {
+            height: topHeight,
+            backgroundColor: 'white',
+        }
+
+        styles.foot = {
+            height: topHeight,
+            backgroundColor: 'white',
+        }
+
         // main panel
         styles.main = {
             float: 'left',
@@ -145,15 +160,21 @@ class Layout extends Component {
         }
         // end how to place component in a container
 
-        // global update, used to dimension other components
-        globalDimensions.handHeight = leftMainWidth;
-        globalDimensions.rhssHeight = rhssHeight;
     }
 
+    updateGlobalDimensions() {
+        // updates a global variable with layout sizes that can then be passed on to components
+        // components will then automatically resize correctly
+        globalDimensions.cn =  {height: styles.cn.height ,
+                                width:  styles.main.width};
+        globalDimensions.rhss =   {height: styles.rhss.height ,
+                                   width:  styles.rhs.width};
+    }
 
     render() {
         console.log('Layout');
         this.dynamicStyles();
+        this.updateGlobalDimensions();
         return (
             <div style={[styles.base]}>
                 <div id="nav" style={[styles.base, styles.nav]}>
@@ -161,6 +182,7 @@ class Layout extends Component {
                     <p>{styles.rhs.width}</p>
                     <p>{styles.main.width}</p>
                 </div>
+                <div id="top" style={[styles.base, styles.top]}></div>
                 <div id="main" style={[styles.base, styles.main]}>
                     <div id="mainleft" style={[styles.base, styles.leftMain]}>
                         <div id="ln" style={[styles.base, styles.ln]}>
@@ -175,7 +197,7 @@ class Layout extends Component {
                         </div>
                         <div id="cc" style={[styles.base, styles.cc, styles.centerAll]}>
                         </div>
-                        <div id="cs" style={[styles.base, styles.cs]}>
+                        <div id="cs" style={[styles.base, styles.cs, styles.centerAll]}>
                         </div>
                     </div>
                     <div id="mainright" style={[styles.base, styles.rightMain]}>
@@ -191,6 +213,7 @@ class Layout extends Component {
                     <div id="rhsn" style={[styles.base, styles.rhsn]}></div>
                     <div id="rhss" style={[styles.base, styles.rhss, styles.centerAll]}></div>
                 </div>
+                <div id="foot" style={[styles.base, styles.foot]}></div>
             </div>
         );
     }

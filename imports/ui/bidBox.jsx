@@ -33,11 +33,19 @@ class BidBox extends Component {
     }
 
     dynamicStyles() {
+        var height = this.props.size;
+        var width = this.props.aspectRatio * this.props.size;
+        if (width > 0.9*this.props.parentDim.width) {
+            width = 0.9*this.props.parentDim.width;
+            height = width/this.props.aspectRatio;
+        }
         return {
-                height: this.props.size + 'px',
-                width: this.props.aspectRatio * this.props.size  + 'px',
-                padding: this.props.size * 0.1  + 'px',
-                paddingTop: this.props.size * 0.08  + 'px',
+                height: height + 'px',
+                width: width  + 'px',
+                paddingTop: height * 0.08  + 'px',
+                paddingRight: height * 0.1  + 'px',
+                paddingBottom: height * 0.1  + 'px',
+                paddingLeft: height * 0.1  + 'px',
             };
     }
 
