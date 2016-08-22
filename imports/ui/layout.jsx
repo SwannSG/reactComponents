@@ -15,6 +15,7 @@ const dimensions = {
     navHeightFactor: 0.15,              // height of 'nav'
     rhsWidthFactor: 0.275,              // width of 'rhs'
     ccWidthFactor: 0.55,
+    rhsnHeightFactor: 0.7,
 }
 
 class Layout extends Component {
@@ -34,6 +35,8 @@ class Layout extends Component {
         var lnHeight = (mainHeight - dimensions.ccWidthFactor * mainWidth)/2
         var centerMainWidth = mainWidth - 2 * leftMainWidth;
         var ccHeight = mainHeight - 2 * leftMainWidth;
+        var rhsnHeight = dimensions.rhsnHeightFactor * mainHeight;
+        var rhssHeight = mainHeight - rhsnHeight;
 
         // nav panel
         styles.nav = {
@@ -121,15 +124,30 @@ class Layout extends Component {
         }
         // end main-right-column block
 
+        // rhs column
+        styles.rhsn = {
+            height:rhsnHeight,
+            backgroundColor: 'yellow',
 
+        }
+        styles.rhss = {
+            height:rhssHeight,
+            backgroundColor: 'purple',
+
+        }
+        // end rhs column
+
+        // how to place component in a container
         styles.centerAll = {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
         }
+        // end how to place component in a container
 
         // global update, used to dimension other components
         globalDimensions.handHeight = leftMainWidth;
+        globalDimensions.rhssHeight = rhssHeight;
     }
 
 
@@ -155,7 +173,7 @@ class Layout extends Component {
                     <div id="maincenter" style={[styles.base, styles.centerMain]}>
                         <div id="cn" style={[styles.base, styles.cn, styles.centerAll]}>
                         </div>
-                        <div id="cc" style={[styles.base, styles.cc]}>
+                        <div id="cc" style={[styles.base, styles.cc, styles.centerAll]}>
                         </div>
                         <div id="cs" style={[styles.base, styles.cs]}>
                         </div>
@@ -169,7 +187,10 @@ class Layout extends Component {
                         </div>
                         </div>
                 </div>
-                <div id="rhs" style={[styles.base, styles.rhs]}></div>
+                <div id="rhs" style={[styles.base, styles.rhs]}>
+                    <div id="rhsn" style={[styles.base, styles.rhsn]}></div>
+                    <div id="rhss" style={[styles.base, styles.rhss, styles.centerAll]}></div>
+                </div>
             </div>
         );
     }

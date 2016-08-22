@@ -15,7 +15,8 @@ styles.base = {
         borderRadius: '6px',
         boxShadow: 'rgba(88, 86, 86, 0.721569) 4px 5px 5px -1px',
         backgroundRepeat: 'repeat-x',
-        backgroundImage: 'linear-gradient(rgb(233, 234, 241) 0%, rgb(106, 118, 208) 100%)'
+        backgroundImage: 'linear-gradient(rgb(233, 234, 241) 0%, rgb(106, 118, 208) 100%)',
+        zIndex: 1000,
 };
 
 class BidBox extends Component {
@@ -70,7 +71,7 @@ class BidBox extends Component {
                <Button cls="pass" label="Pass" size={this.props.size*0.25} value='pass' updateState={this.updateState}/>
                <Button cls="dbl" label="Dbl" size={this.props.size*0.25} value='dbl' updateState={this.updateState}/>
                <Divider size={this.props.size*0.72} />
-               <LevelButtons lastBid={this.props.lastBid} size={this.props.size*0.25} updateState={this.updateState}/>
+               <LevelButtons lastBid={this.props.lastBid} size={this.props.size*0.235} updateState={this.updateState}/>
                <Divider size={this.props.size*0.72} />
                {(this.state.cycle==='levelSelected') ? <SuitButtons lastBid={this.props.lastBid} levelSelected={parseInt(this.state.level)} size={this.props.size*0.25} updateState={this.updateState}/> : null}
             </div>
