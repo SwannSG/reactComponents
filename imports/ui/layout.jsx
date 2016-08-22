@@ -14,9 +14,8 @@ styles.base = {
 const dimensions = {
     navHeightFactor: 0.15,              // height of 'nav'
     rhsWidthFactor: 0.275,              // width of 'rhs'
-    ccWidthFactor: 0.60,
+    ccWidthFactor: 0.55,
 }
-
 
 class Layout extends Component {
     constructor(props) {
@@ -122,6 +121,8 @@ class Layout extends Component {
         }
         // end main-right-column block
 
+        // global update, used to dimension other components
+        globalDimensions.handHeight = leftMainWidth;
 
     }
 
@@ -147,6 +148,8 @@ class Layout extends Component {
                     </div>
                     <div id="maincenter" style={[styles.base, styles.centerMain]}>
                         <div id="cn" style={[styles.base, styles.cn]}>
+                            <div id="cc-content"style={[styles.base, {marginLeft:'auto', marginRight:'auto'}]}>
+                            </div>
                         </div>
                         <div id="cc" style={[styles.base, styles.cc]}>
                         </div>
@@ -154,13 +157,13 @@ class Layout extends Component {
                         </div>
                     </div>
                     <div id="mainright" style={[styles.base, styles.rightMain]}>
-                    <div id="rn" style={[styles.base, styles.ln]}>
-                    </div>
-                    <div id="rc" style={[styles.base, styles.lc]}>
-                    </div>
-                    <div id="rs" style={[styles.base, styles.ls]}>
-                    </div>
-                    </div>
+                        <div id="rn" style={[styles.base, styles.ln]}>
+                        </div>
+                        <div id="rc" style={[styles.base, styles.lc]}>
+                        </div>
+                        <div id="rs" style={[styles.base, styles.ls]}>
+                        </div>
+                        </div>
                 </div>
                 <div id="rhs" style={[styles.base, styles.rhs]}></div>
             </div>

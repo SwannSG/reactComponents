@@ -9,16 +9,16 @@ import { BidBox } from '../imports/ui/bidBox.jsx'
 import { Layout } from '../imports/ui/layout.jsx'
 
 bm.shuffle();
-
+globalDimensions = {};
 
 Meteor.startup(() => {
     console.log('Meteor.startup');
-    window.addEventListener('resize',
-        _.debounce(function windowResize(){
-            console.log('Window resize event');
-            render(<Layout vh={$(window).height()} vw={$(window).width()}/>, document.getElementById('app'));
-        }, 200)
-    );
+    // window.addEventListener('resize',
+    //     _.debounce(function windowResize(){
+    //         console.log('Window resize event');
+    //         render(<Layout vh={$(window).height()} vw={$(window).width()}/>, document.getElementById('app'));
+    //     }, 200)
+    // );
 
 
 
@@ -38,14 +38,15 @@ Meteor.startup(() => {
     // render(<BidBox size={140} lastBid={'1h'}/>, document.getElementById('app'));
     // render(<Button size={30} />, document.getElementById('appA'));
 
-    console.log($(window).width());
-    $(document).ready(function () {
-        console.log('document is ready');
-        console.log($(window).width());
-        render(<Layout vh={$(window).height()} vw={$(window).width()}/>, document.getElementById('app'));
-    })
+    // console.log($(window).width());
+    // $(document).ready(function () {
+    //     console.log('document is ready');
+    //     console.log($(window).width());
+    // })
+    render(<Layout vh={$(window).height()} vw={$(window).width()}/>, document.getElementById('app'));
 
+    console.log(globalDimensions)
 
-    console.log('render');
+    render(<North hand={ bm.north } cardheight={globalDimensions.handHeight} meta={bm.handSummary(bm.north)} faceup={true} vulnerable={false}/>, document.getElementById('cc-content'));
 
 });

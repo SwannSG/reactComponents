@@ -11,7 +11,7 @@ class HandNS extends Component {
         this.hand = {
             style: {
                 backgroundColor: 'yellow',
-                margin:0,
+                margin:'0 auto',
                 /*position must be set relative to allow absolute positioning of the cards to work correctly*/
                 position: 'relative',
             }
