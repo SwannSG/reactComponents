@@ -121,9 +121,15 @@ class Layout extends Component {
         }
         // end main-right-column block
 
+
+        styles.centerAll = {
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+        }
+
         // global update, used to dimension other components
         globalDimensions.handHeight = leftMainWidth;
-
     }
 
 
@@ -141,15 +147,13 @@ class Layout extends Component {
                     <div id="mainleft" style={[styles.base, styles.leftMain]}>
                         <div id="ln" style={[styles.base, styles.ln]}>
                         </div>
-                        <div id="lc" style={[styles.base, styles.lc]}>
+                        <div id="lc" style={[styles.base, styles.lc, styles.centerAll]}>
                         </div>
                         <div id="ls" style={[styles.base, styles.ls]}>
                         </div>
                     </div>
                     <div id="maincenter" style={[styles.base, styles.centerMain]}>
-                        <div id="cn" style={[styles.base, styles.cn]}>
-                            <div id="cc-content"style={[styles.base, {marginLeft:'auto', marginRight:'auto'}]}>
-                            </div>
+                        <div id="cn" style={[styles.base, styles.cn, styles.centerAll]}>
                         </div>
                         <div id="cc" style={[styles.base, styles.cc]}>
                         </div>
@@ -159,9 +163,9 @@ class Layout extends Component {
                     <div id="mainright" style={[styles.base, styles.rightMain]}>
                         <div id="rn" style={[styles.base, styles.ln]}>
                         </div>
-                        <div id="rc" style={[styles.base, styles.lc]}>
+                        <div id="rc" style={[styles.base, styles.lc, styles.centerAll]}>
                         </div>
-                        <div id="rs" style={[styles.base, styles.ls]}>
+                        <div id="rs" style={[styles.base, styles.ls, styles.centerAll]}>
                         </div>
                         </div>
                 </div>

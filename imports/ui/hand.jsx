@@ -11,11 +11,17 @@ class HandNS extends Component {
         this.hand = {
             style: {
                 backgroundColor: 'yellow',
-                margin:'0 auto',
+                margin:0,
                 /*position must be set relative to allow absolute positioning of the cards to work correctly*/
                 position: 'relative',
             }
         };
+
+        // Hack to horizontally center the component
+        // if (this.props.hpos==='center') {
+        //     this.hand.style.margin = '0 auto';
+        // }
+
         this.img = { style: {}};
         this.meta = {
             style: {
