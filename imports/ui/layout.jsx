@@ -14,7 +14,7 @@ styles.base = {
 const dimensions = {
     navHeightFactor: 0.15,              // height of 'nav'
     rhsWidthFactor: 0.275,              // width of 'rhs'
-    ccWidthFactor: 0.55,
+    ccWidthFactor: 0.55,                // bigger makes card height smaller
     rhsnHeightFactor: 0.7,
     topFootFactor: 0.01,
     topHeightFactor: 0.01,
@@ -32,12 +32,29 @@ class Layout extends Component {
         var footHeight = dimensions.topFootFactor * this.props.vh
         var mainWidth = this.props.vw - rhsWidth;
         var mainHeight = this.props.vh - navHeight - footHeight - topHeight;
+
         if (dimensions.ccWidthFactor >= mainHeight/mainWidth) {
             console.log('dimensions.ccWidthFactor is wrong');
         }
-        var leftMainWidth = mainWidth * (1 - dimensions.ccWidthFactor)/2;
-        var lnHeight = (mainHeight - dimensions.ccWidthFactor * mainWidth)/2
-        var centerMainWidth = mainWidth - 2 * leftMainWidth;
+        var leftMainWidth = mainWidth * (1 - dimensions.ccWidthFactor)/2; // height of cards
+        if (leftMainWidth/this.props.vh > 0.275) {
+            // limit max height of cards
+            leftMainWidth = 0.275 * this.props.vh;
+            // make lcHeight smaller
+            var lcHeight = 2.5 * leftMainWidth
+            // make ln height larger
+            var lnHeight = (mainHeight - lcHeight)/2
+        }
+        else {
+            var lnHeight = (mainHeight - dimensions.ccWidthFactor * mainWidth)/2
+            var centerMainWidth = mainWidth - 2 * leftMainWidth;
+            var lcHeight = centerMainWidth
+        }
+
+
+
+        // var lnHeight = (mainHeight - dimensions.ccWidthFactor * mainWidth)/2
+        // var centerMainWidth = mainWidth - 2 * leftMainWidth;
         var ccHeight = mainHeight - 2 * leftMainWidth;
         var rhsnHeight = dimensions.rhsnHeightFactor * mainHeight;
         var rhssHeight = mainHeight - rhsnHeight;
@@ -100,7 +117,7 @@ class Layout extends Component {
             backgroundColor: 'green'
         }
         styles.lc = {
-            height: centerMainWidth,
+            height: lcHeight,
             backgroundColor: 'black',
         }
         styles.ls = {
@@ -112,7 +129,7 @@ class Layout extends Component {
         // main-center-column block
         styles.cn = {
             height: leftMainWidth,
-            backgroundColor: 'yellow'
+            backgroundColor: 'red'
         }
         styles.cc = {
             height: ccHeight,
@@ -125,15 +142,15 @@ class Layout extends Component {
         // end main-center-column block
 
         // main-right-column block
-        styles.ln = {
+        styles.rn = {
             height: lnHeight,
             backgroundColor: 'black'
         }
-        styles.lc = {
-            height: centerMainWidth,
+        styles.rc = {
+            height: lcHeight,
             backgroundColor: 'green',
         }
-        styles.ls = {
+        styles.rs = {
             height: lnHeight,
             backgroundColor: 'black',
         }
@@ -179,8 +196,7 @@ class Layout extends Component {
             <div style={[styles.base]}>
                 <div id="nav" style={[styles.base, styles.nav]}>
                     <p>{this.props.vw}</p>
-                    <p>{styles.rhs.width}</p>
-                    <p>{styles.main.width}</p>
+                    <p>{this.props.vh}</p>
                 </div>
                 <div id="top" style={[styles.base, styles.top]}></div>
                 <div id="main" style={[styles.base, styles.main]}>
@@ -194,6 +210,7 @@ class Layout extends Component {
                     </div>
                     <div id="maincenter" style={[styles.base, styles.centerMain]}>
                         <div id="cn" style={[styles.base, styles.cn, styles.centerAll]}>
+                            {console.log('styles.cn.height: ' + styles.cn.height)}
                         </div>
                         <div id="cc" style={[styles.base, styles.cc, styles.centerAll]}>
                         </div>
@@ -201,11 +218,11 @@ class Layout extends Component {
                         </div>
                     </div>
                     <div id="mainright" style={[styles.base, styles.rightMain]}>
-                        <div id="rn" style={[styles.base, styles.ln]}>
+                        <div id="rn" style={[styles.base, styles.rn]}>
                         </div>
-                        <div id="rc" style={[styles.base, styles.lc, styles.centerAll]}>
+                        <div id="rc" style={[styles.base, styles.rc, styles.centerAll]}>
                         </div>
-                        <div id="rs" style={[styles.base, styles.ls, styles.centerAll]}>
+                        <div id="rs" style={[styles.base, styles.rs, styles.centerAll]}>
                         </div>
                         </div>
                 </div>

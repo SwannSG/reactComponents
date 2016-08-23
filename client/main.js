@@ -13,12 +13,17 @@ globalDimensions = {};
 
 Meteor.startup(() => {
     console.log('Meteor.startup');
-    // window.addEventListener('resize',
-    //     _.debounce(function windowResize(){
-    //         console.log('Window resize event');
-    //         render(<Layout vh={$(window).height()} vw={$(window).width()}/>, document.getElementById('app'));
-    //     }, 200)
-    // );
+    window.addEventListener('resize',
+        _.debounce(function windowResize(){
+            console.log('Window resize event');
+            render(<Layout vh={$(window).height()} vw={$(window).width()}/>, document.getElementById('app'));
+            render(<North cardheight={globalDimensions.cn.height} hand={ bm.north } hpos={'center'} meta={bm.handSummary(bm.north)} faceup={true} vulnerable={false}/>, document.getElementById('cn'));
+            render(<South cardheight={globalDimensions.cn.height} hand={ bm.south } hpos={'center'} meta={bm.handSummary(bm.south)} faceup={true} vulnerable={false}/>, document.getElementById('cs'));
+            render(<East cardheight={globalDimensions.cn.height} hand={ bm.east } hpos={'center'} meta={bm.handSummary(bm.east)} faceup={false} vulnerable={false}/>, document.getElementById('rc'));
+            render(<West cardheight={globalDimensions.cn.height} hand={ bm.west } hpos={'center'} meta={bm.handSummary(bm.west)} faceup={false} vulnerable={false}/>, document.getElementById('lc'));
+            render(<BidBox size={globalDimensions.rhss.height*0.95} parentDim={globalDimensions.rhss} lastBid={'1h'}/>, document.getElementById('rhss'));
+        }, 200)
+    );
 
 
 
