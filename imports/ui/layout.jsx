@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { render } from 'react-dom'
 import Radium from 'radium'
 
-export { Layout }
+export { Layout, styles }
 
 const styles = {}
 styles.base = {
@@ -11,13 +11,14 @@ styles.base = {
     boxSizing: 'border-box',
 }
 
-const dimensions = {
+const dim = {
     navHeightFactor: 0.15,              // height of 'nav'
     rhsWidthFactor: 0.275,              // width of 'rhs'
-    ccWidthFactor: 0.55,                // bigger makes card height smaller
+    cardHeightFactor: 0.15              // height of cards as a percentage of vh
     rhsnHeightFactor: 0.7,
     topFootFactor: 0.01,
     topHeightFactor: 0.01,
+    handAspectRatio: 2.3                // hand width/height
 }
 
 class Layout extends Component {
@@ -26,135 +27,125 @@ class Layout extends Component {
     }
 
     dynamicStyles() {
-        var navHeight = dimensions.navHeightFactor * this.props.vh;
-        var rhsWidth = dimensions.rhsWidthFactor * this.props.vw;
-        var topHeight = dimensions.topHeightFactor * this.props.vh
-        var footHeight = dimensions.topFootFactor * this.props.vh
-        var mainWidth = this.props.vw - rhsWidth;
-        var mainHeight = this.props.vh - navHeight - footHeight - topHeight;
-
-        if (dimensions.ccWidthFactor >= mainHeight/mainWidth) {
-            console.log('dimensions.ccWidthFactor is wrong');
-        }
-        var leftMainWidth = mainWidth * (1 - dimensions.ccWidthFactor)/2; // height of cards
-        if (leftMainWidth/this.props.vh > 0.275) {
-            // limit max height of cards
-            leftMainWidth = 0.275 * this.props.vh;
-            // make lcHeight smaller
-            var lcHeight = 2.5 * leftMainWidth
-            // make ln height larger
-            var lnHeight = (mainHeight - lcHeight)/2
-        }
-        else {
-            var lnHeight = (mainHeight - dimensions.ccWidthFactor * mainWidth)/2
-            var centerMainWidth = mainWidth - 2 * leftMainWidth;
-            var lcHeight = centerMainWidth
-        }
-
-
-
-        // var lnHeight = (mainHeight - dimensions.ccWidthFactor * mainWidth)/2
-        // var centerMainWidth = mainWidth - 2 * leftMainWidth;
-        var ccHeight = mainHeight - 2 * leftMainWidth;
-        var rhsnHeight = dimensions.rhsnHeightFactor * mainHeight;
-        var rhssHeight = mainHeight - rhsnHeight;
+        // this.props.vh            vertical heigh of viewport
+        // this.props.vw            vertical width of viewport
+        // we explcitily provide height and width for each layout container
 
         // nav panel
         styles.nav = {
-            height: navHeight,
+            height: dim.navHeightFactor * this.props.vh,
+            width: this.props.vh,
             backgroundColor: 'blue'
         }
+        // end nav panel
 
+        // top divider
         styles.top = {
-            height: topHeight,
+            height: dim.topHeightFactor * this.props.vh,
+            width: this.props.vh,
             backgroundColor: 'white',
         }
-
-        styles.foot = {
-            height: topHeight,
-            backgroundColor: 'white',
-        }
+        // end top divider
 
         // main panel
         styles.main = {
             float: 'left',
-            height: mainHeight,
-            width: mainWidth,
+            height: this.props.vh - styles.nav.height - styles.top.height - styles.top.foot,
+            width: this.props.vw - styles.rhs.width,
             backgroundColor: 'gray'
         }
+        // end main panel
+
         // right panel
         styles.rhs = {
             float: 'right',
-            height: mainHeight,
-            width: rhsWidth,
+            height: styles.main.height
+            width: dim.rhsWidthFactor * this.props.vw,
             backgroundColor: 'red'
         }
-        // main-left-column
-        styles.leftMain = {
+        // end right panel
+
+
+        // main.left
+        styles.left = {
             float: 'left',
-            height: mainHeight,
-            width: leftMainWidth,
+            height: styles.main.height,
+            width: dim.cardHeightFactor * this.props.vh,
             backgroundColor: 'gray'
         }
-        // main-center-column
-        styles.centerMain = {
+        // end main.left
+
+        // main.center
+        styles.center = {
             float: 'left',
-            height: mainHeight,
-            width: centerMainWidth,
+            height: styles.main.height,
+            width: this.props.vw - 2 * styles.left.width,
             backgroundColor: 'white',
         }
-        // main-right-column
-        styles.rightMain = {
+        // end main.center
+
+        // main.right
+        styles.right = {
             float: 'left',
-            height: mainHeight,
-            width: leftMainWidth,
+            height: styles.main.height,
+            width: styles.left.width,
             backgroundColor: 'gray'
         }
+        // end main.right
 
-        // main-left-column block
+        // main.left column
         styles.ln = {
-            height: lnHeight,
+            height: (styles.left.height - styles.lc.height)/2,
+            width: styles.left.width
             backgroundColor: 'green'
         }
         styles.lc = {
-            height: lcHeight,
+            height: dim.handAspectRatio * styles.left.width,
+            width: styles.left.width,
             backgroundColor: 'black',
         }
         styles.ls = {
-            height: lnHeight,
+            height: styles.ln.height,
+            width: styles.left.width,
             backgroundColor: 'green',
         }
         // end main-left-column block
 
-        // main-center-column block
+        // main.center column
         styles.cn = {
-            height: leftMainWidth,
+            height: styles.left.width,
+            width: styles.center.width,
             backgroundColor: 'red'
         }
+
         styles.cc = {
-            height: ccHeight,
+            height: styles.main.height - 2 * styles.cn.height,
+            width: styles.main.width,
             backgroundColor: 'blue',
         }
-        styles.cs = {
-            height: leftMainWidth,
-            backgroundColor: 'yellow',
-        }
-        // end main-center-column block
 
-        // main-right-column block
+        styles.cs = {
+            height: styles.cn.height,
+            width: styles.main.width,
+            backgroundColor: 'red'
+        }
+
+        // end main.center column
+
+        // main.right column
         styles.rn = {
-            height: lnHeight,
+            height: rnHeight,
             backgroundColor: 'black'
         }
         styles.rc = {
-            height: lcHeight,
+            height: rcHeight,
             backgroundColor: 'green',
         }
         styles.rs = {
-            height: lnHeight,
+            height: rsHeight,
             backgroundColor: 'black',
         }
-        // end main-right-column block
+        // end main.right column
 
         // rhs column
         styles.rhsn = {
@@ -168,6 +159,13 @@ class Layout extends Component {
 
         }
         // end rhs column
+
+        styles.foot = {
+            height: topHeight,
+            backgroundColor: 'white',
+        }
+
+
 
         // how to place component in a container
         styles.centerAll = {
@@ -200,7 +198,7 @@ class Layout extends Component {
                 </div>
                 <div id="top" style={[styles.base, styles.top]}></div>
                 <div id="main" style={[styles.base, styles.main]}>
-                    <div id="mainleft" style={[styles.base, styles.leftMain]}>
+                    <div id="left" style={[styles.base, styles.left]}>
                         <div id="ln" style={[styles.base, styles.ln]}>
                         </div>
                         <div id="lc" style={[styles.base, styles.lc, styles.centerAll]}>
@@ -208,16 +206,15 @@ class Layout extends Component {
                         <div id="ls" style={[styles.base, styles.ls]}>
                         </div>
                     </div>
-                    <div id="maincenter" style={[styles.base, styles.centerMain]}>
+                    <div id="center" style={[styles.base, styles.center]}>
                         <div id="cn" style={[styles.base, styles.cn, styles.centerAll]}>
-                            {console.log('styles.cn.height: ' + styles.cn.height)}
                         </div>
                         <div id="cc" style={[styles.base, styles.cc, styles.centerAll]}>
                         </div>
                         <div id="cs" style={[styles.base, styles.cs, styles.centerAll]}>
                         </div>
                     </div>
-                    <div id="mainright" style={[styles.base, styles.rightMain]}>
+                    <div id="right" style={[styles.base, styles.right]}>
                         <div id="rn" style={[styles.base, styles.rn]}>
                         </div>
                         <div id="rc" style={[styles.base, styles.rc, styles.centerAll]}>
