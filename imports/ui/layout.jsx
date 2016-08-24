@@ -39,6 +39,7 @@ class Layout extends Component {
         }
         // end nav panel
 
+        // end right panel
         // top divider
         styles.top = {
             height: dim.topHeightFactor * this.props.vh,
@@ -46,6 +47,19 @@ class Layout extends Component {
             backgroundColor: 'white',
         }
         // end top divider
+
+        // right panel
+        styles.rhs = {
+            float: 'right',
+            height: styles.main.height
+            width: dim.rhsWidthFactor * this.props.vw,
+            backgroundColor: 'red'
+        }
+
+        styles.foot = {
+            height: topHeight,
+            backgroundColor: 'white',
+        }
 
         // main panel
         styles.main = {
@@ -55,15 +69,6 @@ class Layout extends Component {
             backgroundColor: 'gray'
         }
         // end main panel
-
-        // right panel
-        styles.rhs = {
-            float: 'right',
-            height: styles.main.height
-            width: dim.rhsWidthFactor * this.props.vw,
-            backgroundColor: 'red'
-        }
-        // end right panel
 
 
         // main.left
@@ -94,15 +99,15 @@ class Layout extends Component {
         // end main.right
 
         // main.left column
-        styles.ln = {
-            height: (styles.left.height - styles.lc.height)/2,
-            width: styles.left.width
-            backgroundColor: 'green'
-        }
         styles.lc = {
             height: dim.handAspectRatio * styles.left.width,
             width: styles.left.width,
             backgroundColor: 'black',
+        }
+        styles.ln = {
+            height: (styles.left.height - styles.lc.height)/2,
+            width: styles.left.width,
+            backgroundColor: 'green'
         }
         styles.ls = {
             height: styles.ln.height,
@@ -134,37 +139,36 @@ class Layout extends Component {
 
         // main.right column
         styles.rn = {
-            height: rnHeight,
+            height: styles.ln.height,
+            width: styles.left.width,
             backgroundColor: 'black'
         }
         styles.rc = {
-            height: rcHeight,
+            height: styles.lc.height,
+            width: styles.left.width,
             backgroundColor: 'green',
         }
         styles.rs = {
-            height: rsHeight,
+            height: styles.ls.height,
+            width: styles.left.width,
             backgroundColor: 'black',
         }
         // end main.right column
 
         // rhs column
         styles.rhsn = {
-            height:rhsnHeight,
+            height: dim.rhsnHeightFactor * styles.rhs.height,
+            width: styles.rhs.width,
             backgroundColor: 'yellow',
 
         }
         styles.rhss = {
-            height:rhssHeight,
+            height: styles.rhs.height - styles.rhsn.height
+            width: styles.rhs.width,
             backgroundColor: 'purple',
 
         }
         // end rhs column
-
-        styles.foot = {
-            height: topHeight,
-            backgroundColor: 'white',
-        }
-
 
 
         // how to place component in a container
