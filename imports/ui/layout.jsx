@@ -14,9 +14,9 @@ styles.base = {
 const dim = {
     navHeightFactor: 0.15,              // height of 'nav'
     rhsWidthFactor: 0.275,              // width of 'rhs'
-    cardHeightFactor: 0.15              // height of cards as a percentage of vh
+    cardHeightFactor: 0.25,              // height of cards as a percentage of vh
     rhsnHeightFactor: 0.7,
-    topFootFactor: 0.01,
+    footHeightFactor: 0.01,
     topHeightFactor: 0.01,
     handAspectRatio: 2.3                // hand width/height
 }
@@ -31,10 +31,16 @@ class Layout extends Component {
         // this.props.vw            vertical width of viewport
         // we explcitily provide height and width for each layout container
 
+        styles.base = {
+            height: this.props.vh,
+            width: this.props.vw
+        }
+
+
         // nav panel
         styles.nav = {
             height: dim.navHeightFactor * this.props.vh,
-            width: this.props.vh,
+            width: this.props.vw,
             backgroundColor: 'blue'
         }
         // end nav panel
@@ -48,28 +54,36 @@ class Layout extends Component {
         }
         // end top divider
 
-        // right panel
-        styles.rhs = {
-            float: 'right',
-            height: styles.main.height
-            width: dim.rhsWidthFactor * this.props.vw,
-            backgroundColor: 'red'
-        }
 
         styles.foot = {
-            height: topHeight,
+            height: dim.footHeightFactor * this.props.vh,
+            width: this.props.vh,
             backgroundColor: 'white',
         }
+
+        console.log(this.props.vh)
+        console.log(styles.nav.height)
+        console.log(styles.top.height)
+        console.log(styles.foot.height)
 
         // main panel
         styles.main = {
             float: 'left',
-            height: this.props.vh - styles.nav.height - styles.top.height - styles.top.foot,
-            width: this.props.vw - styles.rhs.width,
+            height: this.props.vh - styles.nav.height - styles.top.height - styles.foot.height,
+            width: this.props.vw - dim.rhsWidthFactor * this.props.vw,
             backgroundColor: 'gray'
         }
         // end main panel
 
+console.log(styles.main);
+
+        // right panel
+        styles.rhs = {
+            float: 'right',
+            height: styles.main.height,
+            width: dim.rhsWidthFactor * this.props.vw,
+            backgroundColor: 'red'
+        }
 
         // main.left
         styles.left = {
@@ -84,7 +98,7 @@ class Layout extends Component {
         styles.center = {
             float: 'left',
             height: styles.main.height,
-            width: this.props.vw - 2 * styles.left.width,
+            width:  styles.main.width - 2 * styles.left.width,
             backgroundColor: 'white',
         }
         // end main.center
@@ -102,7 +116,7 @@ class Layout extends Component {
         styles.lc = {
             height: dim.handAspectRatio * styles.left.width,
             width: styles.left.width,
-            backgroundColor: 'black',
+            backgroundColor: 'red',
         }
         styles.ln = {
             height: (styles.left.height - styles.lc.height)/2,
@@ -112,7 +126,7 @@ class Layout extends Component {
         styles.ls = {
             height: styles.ln.height,
             width: styles.left.width,
-            backgroundColor: 'green',
+            backgroundColor: 'black',
         }
         // end main-left-column block
 
@@ -125,13 +139,13 @@ class Layout extends Component {
 
         styles.cc = {
             height: styles.main.height - 2 * styles.cn.height,
-            width: styles.main.width,
+            width: styles.center.width,
             backgroundColor: 'blue',
         }
 
         styles.cs = {
             height: styles.cn.height,
-            width: styles.main.width,
+            width: styles.center.width,
             backgroundColor: 'red'
         }
 
@@ -163,7 +177,7 @@ class Layout extends Component {
 
         }
         styles.rhss = {
-            height: styles.rhs.height - styles.rhsn.height
+            height: styles.rhs.height - styles.rhsn.height,
             width: styles.rhs.width,
             backgroundColor: 'purple',
 
@@ -194,6 +208,7 @@ class Layout extends Component {
         console.log('Layout');
         this.dynamicStyles();
         this.updateGlobalDimensions();
+        window.skaap = styles;
         return (
             <div style={[styles.base]}>
                 <div id="nav" style={[styles.base, styles.nav]}>
