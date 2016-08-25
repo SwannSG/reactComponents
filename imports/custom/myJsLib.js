@@ -28,6 +28,7 @@ var bm = {
         this.east = shuffled_pack.slice(13,26).sort(this._cmp.bind(this));
         this.south = shuffled_pack.slice(26,39).sort(this._cmp.bind(this));
         this.west = shuffled_pack.slice(39,52).sort(this._cmp.bind(this));
+        this._vulnerability();
     },
     _cmp: function _cmp(a,b) {                   // display order of cards on screen
         var aInt = parseInt(a.slice(2,4));
@@ -280,36 +281,11 @@ var bm = {
         );
     },
 
-}
-
-getCardHeight = function() {
-    var styles = getComputedStyle(document.documentElement);
-    return String(styles.getPropertyValue('--cardheight')).trim();
-
-}
-
-setCardHeight = function(height) {
-    document.documentElement.style.setProperty('--cardheight', height + 'px');
-}
-
-
-for (var i=0; i < 1000; i++) {
-    bm.shuffle();
-    if (bm.rightDeal({points:20})) {
-        break;
+    _vulnerability: function vulnerability() {
+        this.north.vulnerability = _.shuffle([true, false])[0];
+        this.south.vulnerability = this.north.vulnerability;
+        this.west.vulnerability = _.shuffle([true, false])[0];
+        this.east.vulnerability = this.west.vulnerability;
     }
-}
 
-for (var i=0; i < 1000; i++) {
-    bm.shuffle();
-    if (bm.rightDeal({distr:[8,6,6,6]})) {
-        break;
-    }
-}
-
-for (var i=0; i < 1000; i++) {
-    bm.shuffle();
-    if (bm.rightDeal({points:20, distr:[8,6,6,6]})) {
-        break;
-    }
 }

@@ -18,7 +18,6 @@ class Deal extends Component {
     }
 
     updateState() {
-        console.log('deal.updateState');
         Session.set('dealToggle', Session.get('dealToggle')==='a' ? 'b' : 'a');
         console.log(Session.get('dealToggle'));
         bm.shuffle();

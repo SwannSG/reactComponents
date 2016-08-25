@@ -14,7 +14,8 @@ styles.base = {
 const dim = {
     navHeightFactor: 0.15,              // height of 'nav'
     rhsWidthFactor: 0.275,              // width of 'rhs'
-    cardHeightFactor: 0.25,              // height of cards as a percentage of vh
+    cardHeightFactor: 0.2,             // height of cards as a percentage of vh
+    edgeWidthFactor: 0.005,              // left margin on layout
     rhsnHeightFactor: 0.7,
     footHeightFactor: 0.01,
     topHeightFactor: 0.01,
@@ -50,39 +51,34 @@ class Layout extends Component {
         styles.top = {
             height: dim.topHeightFactor * this.props.vh,
             width: this.props.vh,
-            backgroundColor: 'white',
         }
         // end top divider
 
 
         styles.foot = {
             height: dim.footHeightFactor * this.props.vh,
-            width: this.props.vh,
-            backgroundColor: 'white',
+            width: this.props.vw,
         }
 
-        console.log(this.props.vh)
-        console.log(styles.nav.height)
-        console.log(styles.top.height)
-        console.log(styles.foot.height)
+        styles.edge = {
+            float: 'left',
+            height: this.props.vh - styles.nav.height - styles.top.height - styles.foot.height,
+            width: dim.edgeWidthFactor * this.props.vw,
+        }
 
         // main panel
         styles.main = {
             float: 'left',
-            height: this.props.vh - styles.nav.height - styles.top.height - styles.foot.height,
-            width: this.props.vw - dim.rhsWidthFactor * this.props.vw,
-            backgroundColor: 'gray'
+            height: styles.edge.height,
+            width: this.props.vw - dim.rhsWidthFactor * this.props.vw - styles.edge.width,
         }
         // end main panel
-
-console.log(styles.main);
 
         // right panel
         styles.rhs = {
             float: 'right',
             height: styles.main.height,
             width: dim.rhsWidthFactor * this.props.vw,
-            backgroundColor: 'red'
         }
 
         // main.left
@@ -90,7 +86,6 @@ console.log(styles.main);
             float: 'left',
             height: styles.main.height,
             width: dim.cardHeightFactor * this.props.vh,
-            backgroundColor: 'gray'
         }
         // end main.left
 
@@ -99,7 +94,6 @@ console.log(styles.main);
             float: 'left',
             height: styles.main.height,
             width:  styles.main.width - 2 * styles.left.width,
-            backgroundColor: 'white',
         }
         // end main.center
 
@@ -108,7 +102,6 @@ console.log(styles.main);
             float: 'left',
             height: styles.main.height,
             width: styles.left.width,
-            backgroundColor: 'gray'
         }
         // end main.right
 
@@ -116,17 +109,14 @@ console.log(styles.main);
         styles.lc = {
             height: dim.handAspectRatio * styles.left.width,
             width: styles.left.width,
-            backgroundColor: 'red',
         }
         styles.ln = {
             height: (styles.left.height - styles.lc.height)/2,
             width: styles.left.width,
-            backgroundColor: 'green'
         }
         styles.ls = {
             height: styles.ln.height,
             width: styles.left.width,
-            backgroundColor: 'black',
         }
         // end main-left-column block
 
@@ -134,19 +124,16 @@ console.log(styles.main);
         styles.cn = {
             height: styles.left.width,
             width: styles.center.width,
-            backgroundColor: 'red'
         }
 
         styles.cc = {
             height: styles.main.height - 2 * styles.cn.height,
             width: styles.center.width,
-            backgroundColor: 'blue',
         }
 
         styles.cs = {
             height: styles.cn.height,
             width: styles.center.width,
-            backgroundColor: 'red'
         }
 
         // end main.center column
@@ -155,17 +142,14 @@ console.log(styles.main);
         styles.rn = {
             height: styles.ln.height,
             width: styles.left.width,
-            backgroundColor: 'black'
         }
         styles.rc = {
             height: styles.lc.height,
             width: styles.left.width,
-            backgroundColor: 'green',
         }
         styles.rs = {
             height: styles.ls.height,
             width: styles.left.width,
-            backgroundColor: 'black',
         }
         // end main.right column
 
@@ -173,14 +157,10 @@ console.log(styles.main);
         styles.rhsn = {
             height: dim.rhsnHeightFactor * styles.rhs.height,
             width: styles.rhs.width,
-            backgroundColor: 'yellow',
-
         }
         styles.rhss = {
             height: styles.rhs.height - styles.rhsn.height,
             width: styles.rhs.width,
-            backgroundColor: 'purple',
-
         }
         // end rhs column
 
@@ -195,20 +175,9 @@ console.log(styles.main);
 
     }
 
-    updateGlobalDimensions() {
-        // updates a global variable with layout sizes that can then be passed on to components
-        // components will then automatically resize correctly
-        globalDimensions.cn =  {height: styles.cn.height ,
-                                width:  styles.main.width};
-        globalDimensions.rhss =   {height: styles.rhss.height ,
-                                   width:  styles.rhs.width};
-    }
-
     render() {
         console.log('Layout');
         this.dynamicStyles();
-        this.updateGlobalDimensions();
-        window.skaap = styles;
         return (
             <div style={[styles.base]}>
                 <div id="nav" style={[styles.base, styles.nav]}>
@@ -216,6 +185,7 @@ console.log(styles.main);
                     <p>{this.props.vh}</p>
                 </div>
                 <div id="top" style={[styles.base, styles.top]}></div>
+                <div id="edge" style={[styles.base, styles.edge]}></div>
                 <div id="main" style={[styles.base, styles.main]}>
                     <div id="left" style={[styles.base, styles.left]}>
                         <div id="ln" style={[styles.base, styles.ln]}>
