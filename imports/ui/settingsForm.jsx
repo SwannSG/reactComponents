@@ -16,76 +16,62 @@ class SettingsForm extends Component {
            showPartnersCardFace: this.props.settings.showPartnersCardFace,
            showPartnersPointCount: this.props.settings.showPartnersPointCount,
            showOwnPointCount: this.props.settings.showOwnPointCount,
+           cycle: 'wip'
        };
        this.updateState = this.updateState.bind(this);
-       this.handleClick = this.handleClick.bind(this);
+       this.handleExit = this.handleExit.bind(this);
     }
 
 
-    handleSubmit(event) {
-        event.preventDefault()
-        console.log('handleSubmit');
-        console.log(this.refs.showOppPointCount.checked);
-    }
-
-    handleClick(event) {
+    handleExit(event) {
         console.log('handleClick');
         Session.set('settings', {
-            showOppPointCount: this.state.showOppPointCount,
-            showOppCardFace: this.state.showOppCardFace,
-            showPartnersCardFace: this.state.showPartnersCardFace,
-            showPartnersPointCount: this.state.showPartnersPointCount,
-            showOwnPointCount: this.state.showOwnPointCount,
+            showOppPointCount: this.refs.showOppPointCount.checked,
+            showOppCardFace: this.refs.showOppCardFace.checked,
+            showPartnersCardFace: this.refs.showPartnersCardFace.checked,
+            showPartnersPointCount: this.refs.showPartnersPointCount.checked,
+            showOwnPointCount: this.refs.showOwnPointCount.checked,
         });
+        this.setState({cycle:'exit'});
     }
 
     updateState(event) {
         console.log('updateState');
-        if (event.target.name==='showOppPointCount') {
-            console.log('showOppPointCount');
-            console.log(event.target.checked);
-            this.setState({showOppPointCount: event.target.checked});
-        }
-        else if (event.target.name==='showOppCardFace') {
-            this.setState({showOppCardFace: event.target.checked});
-        }
-        else if (event.target.name==='showPartnersCardFace') {
-            this.setState({showPartnersCardFace: event.target.checked});
-        }
-        else if (event.target.name==='showPartnersPointCount') {
-            this.setState({showPartnersPointCount: event.target.checked});
-        }
-        else if (event.target.name==='showOwnPointCount') {
-            this.setState({showOwnPointCount: event.target.checked});
-        }
-        console.log('*****************');
-        console.log(this.state);
-        console.log('*****************');
+        console.log(event.target.name + ': ' + event.target.checked)
+        var obj = {};
+        obj[event.target.name] = event.target.checked;
+        this.setState(obj);
+        // this.data[event.target.name] = event.target.checked;
     }
 
     render() {
+        console.log('render');
+        if (this.state.cycle==='exit') {
+            // set null in DOM
+            return null;
+        }
         return (
             <div>
-                <i style={{color:'gray'}} className="fa fa-times" aria-hidden="true" onClick={this.handleClick}></i>
+                <i style={{color:'gray'}} className="fa fa-times" aria-hidden="true" onClick={this.handleExit}></i>
                 <form>
                     <label>Show opponents point count and distribution</label>
-                    <input type="checkbox" name="showOppPointCount"
+                    <input type="checkbox" name="showOppPointCount" ref="showOppPointCount"
                      checked={this.state.showPointCount} onChange={this.updateState} />
 
                     <label>Show opponents cards</label>
-                    <input type="checkbox" name="showOppCardFace"
+                    <input type="checkbox" name="showOppCardFace" ref="showOppCardFace"
                     checked={this.state.showOppCardFace} onChange={this.updateState} />
 
                     <label>Show partners cards</label>
-                    <input type="checkbox" name="showPartnersCardFace"
+                    <input type="checkbox" name="showPartnersCardFace" ref="showPartnersCardFace"
                      checked={this.state.showPartnersCardFace} onChange={this.updateState} />
 
                      <label>Show partners point count and distribution</label>
-                     <input type="checkbox" name="showPartnersPointCount"
+                     <input type="checkbox" name="showPartnersPointCount" ref="showPartnersPointCount"
                       checked={this.state.showPartnersCount} onChange={this.updateState} />
 
                       <label>Show own point count and distribution</label>
-                      <input type="checkbox" name="showOwnPointCount"
+                      <input type="checkbox" name="showOwnPointCount" ref="showOwnPointCount"
                        checked={this.state.showOwnPointCount} onChange={this.updateState} />
                 </form>
             </div>
