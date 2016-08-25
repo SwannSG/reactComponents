@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react'
 import { render, findDOMNode } from 'react-dom'
 import Radium from 'radium'
 import 'font-awesome/css/font-awesome.css'
+import { Session } from 'meteor/session';
+
 
 export { SettingsForm }
 
@@ -9,11 +11,11 @@ class SettingsForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-           showOppPointCount: false,
-           showOppCardFace: false,
-           showPartnersCardFace: false,
-           showPartnersPointCount: false,
-           showOwnPointCount: true,
+           showOppPointCount: this.props.settings.showOppPointCount,
+           showOppCardFace: this.props.settings.showOppCardFace,
+           showPartnersCardFace: this.props.settings.showPartnersCardFace,
+           showPartnersPointCount: this.props.settings.showPartnersPointCount,
+           showOwnPointCount: this.props.settings.showOwnPointCount,
        };
        this.updateState = this.updateState.bind(this);
        this.handleClick = this.handleClick.bind(this);
@@ -28,26 +30,37 @@ class SettingsForm extends Component {
 
     handleClick(event) {
         console.log('handleClick');
-        console.log(this.state);
+        Session.set('settings', {
+            showOppPointCount: this.state.showOppPointCount,
+            showOppCardFace: this.state.showOppCardFace,
+            showPartnersCardFace: this.state.showPartnersCardFace,
+            showPartnersPointCount: this.state.showPartnersPointCount,
+            showOwnPointCount: this.state.showOwnPointCount,
+        });
     }
 
     updateState(event) {
         console.log('updateState');
         if (event.target.name==='showOppPointCount') {
+            console.log('showOppPointCount');
+            console.log(event.target.checked);
             this.setState({showOppPointCount: event.target.checked});
         }
-        if (event.target.name==='showOppCardFace') {
+        else if (event.target.name==='showOppCardFace') {
             this.setState({showOppCardFace: event.target.checked});
         }
-        if (event.target.name==='showPartnersCardFace') {
+        else if (event.target.name==='showPartnersCardFace') {
             this.setState({showPartnersCardFace: event.target.checked});
         }
-        if (event.target.name==='showPartnersPointCount') {
+        else if (event.target.name==='showPartnersPointCount') {
             this.setState({showPartnersPointCount: event.target.checked});
         }
-        if (event.target.name==='showOwnPointCount') {
+        else if (event.target.name==='showOwnPointCount') {
             this.setState({showOwnPointCount: event.target.checked});
         }
+        console.log('*****************');
+        console.log(this.state);
+        console.log('*****************');
     }
 
     render() {
@@ -79,6 +92,14 @@ class SettingsForm extends Component {
         );
     }
 }
+
+// {  showOppPointCount: false,
+//    showOppCardFace: false,
+//    showPartnersCardFace: false,
+//    showPartnersPointCount: false,
+//    showOwnPointCount: true,
+// }
+
 
 
 // modal.style.display = "block";

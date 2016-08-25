@@ -40,7 +40,14 @@ Meteor.startup(() => {
     // render(<Deal hpos='center'/>, document.getElementById('cc'));
     // // render(<BidBox size={globalDimensions.rhss.height*0.95} parentDim={globalDimensions.rhss} lastBid={'1h'}/>, document.getElementById('rhss'));
     // render(<SettingsForm />, document.getElementById('rhsn'));
-    render(<SettingsForm />, document.getElementById('app'))
+    Session.set('settings',
+        {  showOppPointCount: false,
+           showOppCardFace: false,
+           showPartnersCardFace: false,
+           showPartnersPointCount: false,
+           showOwnPointCount: true,
+        })
+    render(<SettingsForm settings={Session.get('settings')} />, document.getElementById('app'))
 
 });
 
