@@ -6,6 +6,7 @@ import { createContainer } from 'meteor/react-meteor-data';
 import { East, North, South, West } from '../imports/ui/hand.jsx';
 import { bm } from '../imports/custom/myJsLib.js'
 import { Button } from '../imports/ui/button.jsx'
+import { SettingsForm } from '../imports/ui/settingsForm.jsx'
 import { BidBox } from '../imports/ui/bidBox.jsx'
 import { Layout, styles } from '../imports/ui/layout.jsx'
 import { Deal } from '../imports/ui/deal.jsx'
@@ -28,18 +29,23 @@ Meteor.startup(() => {
 
 
     // var x = ["ks51", "ts48", "8s46", "2s40", "qh37", "7h32", "3h28", "kc12", "jc10", "5c04", "3c02", "6d18", "3d15"]
-    bm.shuffle();
-    Session.set('dealToggle', 'a')
-    render(<Layout vh={$(window).height()} vw={$(window).width()}/>, document.getElementById('app'));
-    // render(<North cardheight={styles.cn.height} hand={ bm.north } hpos={'center'} meta={bm.handSummary(bm.north)} faceup={true} vulnerable={false}/>, document.getElementById('cn'));
-    render(<NorthContainer />, document.getElementById('cn'));
-    render(<SouthContainer />, document.getElementById('cs'));
-    render(<WestContainer />, document.getElementById('lc'));
-    render(<EastContainer />, document.getElementById('rc'));
-    render(<Deal hpos='center'/>, document.getElementById('cc'));
-    // render(<BidBox size={globalDimensions.rhss.height*0.95} parentDim={globalDimensions.rhss} lastBid={'1h'}/>, document.getElementById('rhss'));
+    // bm.shuffle();
+    // Session.set('dealToggle', 'a')
+    // render(<Layout vh={$(window).height()} vw={$(window).width()}/>, document.getElementById('app'));
+    // // render(<North cardheight={styles.cn.height} hand={ bm.north } hpos={'center'} meta={bm.handSummary(bm.north)} faceup={true} vulnerable={false}/>, document.getElementById('cn'));
+    // render(<NorthContainer />, document.getElementById('cn'));
+    // render(<SouthContainer />, document.getElementById('cs'));
+    // render(<WestContainer />, document.getElementById('lc'));
+    // render(<EastContainer />, document.getElementById('rc'));
+    // render(<Deal hpos='center'/>, document.getElementById('cc'));
+    // // render(<BidBox size={globalDimensions.rhss.height*0.95} parentDim={globalDimensions.rhss} lastBid={'1h'}/>, document.getElementById('rhss'));
+    // render(<SettingsForm />, document.getElementById('rhsn'));
+    render(<SettingsForm />, document.getElementById('app'))
 
 });
+
+
+
 
 var NorthContainer = createContainer(() => {
     Session.get('dealToggle');
