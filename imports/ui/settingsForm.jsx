@@ -16,12 +16,19 @@ class SettingsForm extends Component {
            showOwnPointCount: true,
        };
        this.updateState = this.updateState.bind(this);
+       this.handleClick = this.handleClick.bind(this);
     }
+
 
     handleSubmit(event) {
         event.preventDefault()
         console.log('handleSubmit');
         console.log(this.refs.showOppPointCount.checked);
+    }
+
+    handleClick(event) {
+        console.log('handleClick');
+        console.log(this.state);
     }
 
     updateState(event) {
@@ -46,7 +53,7 @@ class SettingsForm extends Component {
     render() {
         return (
             <div>
-                <i className="fa fa-times" aria-hidden="true"></i>
+                <i style={{color:'gray'}} className="fa fa-times" aria-hidden="true" onClick={this.handleClick}></i>
                 <form>
                     <label>Show opponents point count and distribution</label>
                     <input type="checkbox" name="showOppPointCount"
@@ -72,3 +79,7 @@ class SettingsForm extends Component {
         );
     }
 }
+
+
+// modal.style.display = "block";
+// modal.style.display = "none";

@@ -4,3 +4,12 @@ html, body, div, p {
     margin: 0;
     padding: 0;
 }
+
+#myModal {
+    height: 100px;
+    width: 100px;
+    background-color: red;
+    position:absolute;
+    top:50px;
+    left:50px;
+}
