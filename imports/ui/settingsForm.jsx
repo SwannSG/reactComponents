@@ -1,11 +1,56 @@
 import React, { Component, PropTypes } from 'react'
 import { render, findDOMNode } from 'react-dom'
 import Radium from 'radium'
-import 'font-awesome/css/font-awesome.css'
 import { Session } from 'meteor/session';
-
+import './settingsForm.css'
 
 export { SettingsForm }
+
+var styles = {
+    base: {},
+    parent: {
+        backgroundColor: 'gray',
+        backgroundColor: '#fff',
+        border: '1px solid rgba(0,0,0,.6)',
+        position: 'absolute',
+        fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif',
+        fontWeight:200,
+        borderRadius: '6px',
+        boxShadow: 'rgba(88, 86, 86, 0.721569) 4px 5px 5px -1px',
+    },
+    head: {
+        float:'left',
+        margin: 0,
+        padding: 0,
+    },
+    headSection: {
+        padding: 0,
+        margin: 0,
+        borderBottom: '1px solid gray',
+    },
+    close: {
+        float:'right',
+        display: 'inline-block',
+        padding: 0,
+        cursor: 'pointer',
+        background: '0 0',
+        border: 0,
+    },
+    entry: {
+    },
+    label: {
+        float: 'left',
+        display: 'inline-block',
+        width: '100%',
+    },
+    input: {
+        float: 'right',
+        display: 'inline-block',
+        boxShadow: 'rgba(88, 86, 86, 0.721569) 1px 2px 2px -2px',
+    }
+}
+
+
 
 class SettingsForm extends Component {
     constructor(props) {
@@ -44,47 +89,92 @@ class SettingsForm extends Component {
         // this.data[event.target.name] = event.target.checked;
     }
 
+    dynamicStyles() {
+        // css property values that are calculated at runtime
+        var ds = {
+            parent: {
+                height: this.props.height + 'px',
+                width: 2 * this.props.height + 'px',
+                margin: 0,
+                padding: 0.1 * this.props.height + 'px ' + 0.15 * this.props.height + 'px ',
+                fontSize: 0.09 * this.props.height +'px',
+                top: (this.props.vh - this.props.height)*1/3,
+                left: (this.props.vw - 1.8*this.props.height)/2,
+            },
+            headSection: {
+                height: 0.15 * this.props.height + 'px',
+                marginBottom: 0.04 * this.props.height + 'px',
+            },
+            label: {
+                paddingTop: 0.04*this.props.height,
+            },
+            close: {
+                fontSize: 0.14 * this.props.height +'px',
+            },
+            footer: {
+                height: 0.15 * this.props.height +'px',
+            },
+            formDiv: {
+                height: 0.9 * this.props.height + 'px',
+            },
+            input: {
+                height: '9px',
+                width: '9px',
+            }
+
+        };
+        return ds;
+    }
+
+
+
+
     render() {
         console.log('render');
+        dyn = this.dynamicStyles()
         if (this.state.cycle==='exit') {
             // set null in DOM
             return null;
         }
         return (
-            <div>
-                <i style={{color:'gray'}} className="fa fa-times" aria-hidden="true" onClick={this.handleExit}></i>
-                <form>
-                    <label>Show opponents point count and distribution</label>
-                    <input type="checkbox" name="showOppPointCount" ref="showOppPointCount"
-                     checked={this.state.showPointCount} onChange={this.updateState} />
+            <div id='parent' style={[styles.parent, dyn.parent]}>
+                <div id='headsection' style={[styles.headSection, dyn.headSection]}>
+                    <h4 style={[styles.head, dyn.head]}>Settings</h4>
+                    <button style={[styles.close, dyn.close]} type="button" onClick={this.handleExit}>&times;</button>
+                </div>
+                <div  style={[dyn.formDiv]}>
+                    <form>
+                        <label style={[styles.label, dyn.label]}>Show opponents point count and distribution
+                        <input style={[styles.input, dyn.input]} type="checkbox" name="showOppPointCount" ref="showOppPointCount"
+                         checked={this.state.showPointCount} onChange={this.updateState} /></label>
 
-                    <label>Show opponents cards</label>
-                    <input type="checkbox" name="showOppCardFace" ref="showOppCardFace"
-                    checked={this.state.showOppCardFace} onChange={this.updateState} />
+                        <label style={[styles.label, dyn.label]}>Show opponents cards
+                        <input style={[styles.input, dyn.input]} type="checkbox" name="showOppCardFace" ref="showOppCardFace"
+                        checked={this.state.showOppCardFace} onChange={this.updateState} /></label>
 
-                    <label>Show partners cards</label>
-                    <input type="checkbox" name="showPartnersCardFace" ref="showPartnersCardFace"
-                     checked={this.state.showPartnersCardFace} onChange={this.updateState} />
+                        <label style={[styles.label, dyn.label]}>Show partners cards
+                        <input style={[styles.input, dyn.input]} type="checkbox" name="showPartnersCardFace" ref="showPartnersCardFace"
+                         checked={this.state.showPartnersCardFace} onChange={this.updateState} /></label>
 
-                     <label>Show partners point count and distribution</label>
-                     <input type="checkbox" name="showPartnersPointCount" ref="showPartnersPointCount"
-                      checked={this.state.showPartnersCount} onChange={this.updateState} />
+                         <label style={[styles.label, dyn.label]}>Show partners point count and distribution
+                         <input style={[styles.input, dyn.input]}type="checkbox" name="showPartnersPointCount" ref="showPartnersPointCount"
+                          checked={this.state.showPartnersCount} onChange={this.updateState} /></label>
 
-                      <label>Show own point count and distribution</label>
-                      <input type="checkbox" name="showOwnPointCount" ref="showOwnPointCount"
-                       checked={this.state.showOwnPointCount} onChange={this.updateState} />
-                </form>
+                        <label style={[styles.label, dyn.label]}>Show own point count and distribution
+                        <input style={[styles.input, dyn.input]} type="checkbox" name="showOwnPointCount" ref="showOwnPointCount"
+                        checked={this.state.showOwnPointCount} onChange={this.updateState} /></label>
+                    </form>
+                </div>
+                <div footer="1" style={[dyn.footer]}></div>
             </div>
         );
     }
 }
 
-// {  showOppPointCount: false,
-//    showOppCardFace: false,
-//    showPartnersCardFace: false,
-//    showPartnersPointCount: false,
-//    showOwnPointCount: true,
-// }
+SettingsForm = Radium(SettingsForm);
+
+
+
 
 
 

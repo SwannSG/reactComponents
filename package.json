@@ -6,7 +6,6 @@
   },
   "dependencies": {
     "bootstrap": "^3.3.7",
-    "font-awesome": "^4.6.3",
     "meteor-node-stubs": "~0.2.0",
     "radium": "^0.18.1",
     "react": "^15.3.1",

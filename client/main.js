@@ -47,7 +47,7 @@ Meteor.startup(() => {
            showPartnersPointCount: false,
            showOwnPointCount: true,
         })
-    render(<SettingsForm settings={Session.get('settings')} />, document.getElementById('app'))
+    render(<SettingsForm settings={Session.get('settings')} height={100} vh={$(window).height()} vw={$(window).width()} />, document.getElementById('modal'))
 
 });
 
