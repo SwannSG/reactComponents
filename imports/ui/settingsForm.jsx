@@ -18,10 +18,20 @@ var styles = {
         borderRadius: '6px',
         boxShadow: 'rgba(88, 86, 86, 0.721569) 4px 5px 5px -1px',
     },
-    head: {
-        float:'left',
-        margin: 0,
-        padding: 0,
+    heading: {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        background-color: white;
+        padding-bottom: 10px;
+        padding-top: 10px;
+        border-bottom: 1px solid gray;
+        line-height: 1.25;
+
+
+
+
     },
     headSection: {
         padding: 0,
@@ -90,18 +100,17 @@ class SettingsForm extends Component {
     }
 
     dynamicStyles() {
-        // css property values that are calculated at runtime
-        var ds = {
-            parent: {
-                height: this.props.height + 'px',
-                width: 2 * this.props.height + 'px',
+        var ds = {   
                 margin: 0,
-                padding: 0.1 * this.props.height + 'px ' + 0.15 * this.props.height + 'px ',
+                pading.1 * this.props.height + 'px ' + 0.15 * this.props.height + 'px ',
                 fontSize: 0.09 * this.props.height +'px',
                 top: (this.props.vh - this.props.height)*1/3,
                 left: (this.props.vw - 1.8*this.props.height)/2,
+                border-radius: 6px;
+                border: 1px solid rgba(0,0,0,.6);
+                box-shadow: rgba(88, 86, 86, 0.721569) 4px 5px 5px -1px;
             },
-            headSection: {
+            heading: {
                 height: 0.15 * this.props.height + 'px',
                 marginBottom: 0.04 * this.props.height + 'px',
             },
@@ -137,11 +146,13 @@ class SettingsForm extends Component {
             return null;
         }
         return (
-            <div id='parent' style={[styles.parent, dyn.parent]}>
-                <div id='headsection' style={[styles.headSection, dyn.headSection]}>
-                    <h4 style={[styles.head, dyn.head]}>Settings</h4>
-                    <button style={[styles.close, dyn.close]} type="button" onClick={this.handleExit}>&times;</button>
+            <div parent style={[styles.parent, dyn.parent]}>
+                <div heading style={[styles.heading, dyn.heading]}>
+                    <h4 header style={[styles.header, dyn.header]}>Settings</h4>
+                    <button close style={[styles.close, dyn.close]} type="button" onClick={this.handleExit}>&times;</button>
                 </div>
+
+
                 <div  style={[dyn.formDiv]}>
                     <form>
                         <label style={[styles.label, dyn.label]}>Show opponents point count and distribution

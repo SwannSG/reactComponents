@@ -44,24 +44,6 @@ class Button extends Component {
         super(props);
     }
 
-    // static not currently supported in Meteor 1.4 ******************
-    // We use a work around
-    //      Button.propTypes = {}
-    // static propTypes = {
-    //     size: PropTypes.number,
-    //     value: PropTypes.string,
-    //     label: PropTypes.string,
-    //     style: PropTypes.object
-    // };
-
-    // static defaultProps = {
-    //     size: 50,
-    //     value: 'value',
-    //     label: 'Label',
-    //     style: {}
-    // };
-    // end static ****************************************************
-
     dynamicStyles() {
         // css property values that are calculated at runtime
         return {
